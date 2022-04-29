@@ -1,18 +1,21 @@
 <mat-card class="mb-20">
-    <mat-card-content>
-      <mat-card-title>
-        {{ title | uppercase }}
-        <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
-        <small
-          style="color: lightseagreen !important"
-          class="mtb-5-IMP"
-          *ngIf="loadingReportMessage"
-          >Your file is being prepared for download</small
-        >
-      </mat-card-title>
-      <ng-container>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <ng-container>
       <section class="example-section">
-        <mat-form-field class="example-margin mr-10-IMP">
+        <mat-form-field
+          class="example-margin mr-10-IMP"
+          *ngIf="isDashboardDataRequest"
+        >
           <mat-select
             placeholder="Query Type"
             name="queryList"
@@ -23,52 +26,69 @@
             </ng-container>
           </mat-select>
         </mat-form-field>
-        <ng-container *ngIf="clusterId != '-1' && selectedQuery.cluster=='Y'">
+        <ng-container
+          *ngIf="clusterList?.length > 0 && selectedQuery.cluster == 'Y'"
+        >
           <mat-form-field class="example-margin mr-10-IMP">
             <mat-select
-              placeholder="{{ clusterPlaceHolder }}"
+              placeholder="{{ labels.clusterLabel }}"
               name="cluster"
               [(ngModel)]="selectedCluster"
               (ngModelChange)="getZoneByCluster()"
             >
-              <mat-option [value]="cluster" *ngFor="let cluster of clusterList">{{
-                cluster.title
-              }}</mat-option>
+              <mat-option
+                [value]="cluster"
+                *ngFor="let cluster of clusterList"
+                >{{ cluster.title }}</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </ng-container>
-        <ng-container *ngIf="zones?.length > 0 && selectedQuery.zone=='Y'">
+        <ng-container *ngIf="zones?.length > 0 && selectedQuery.zone == 'Y'">
           <mat-form-field class="example-margin mr-10-IMP">
             <mat-select
-              placeholder="{{ zonePlaceholder }}"
+              placeholder="{{ labels.zoneLabel }}"
               name="zone"
               [(ngModel)]="selectedZone"
               (ngModelChange)="zoneChange()"
             >
-            <ng-container *ngFor="let zone of zones">
-              <mat-option [value]="zone">{{
-                zone.title
-              }}</mat-option>
+              <ng-container *ngFor="let zone of zones">
+                <mat-option [value]="zone">{{ zone.title }}</mat-option>
               </ng-container>
             </mat-select>
           </mat-form-field>
         </ng-container>
         <mat-form-field
-          *ngIf="regions.length > 0 && selectedQuery.region=='Y'" 
+          *ngIf="regions.length > 0 && selectedQuery.region == 'Y'"
           class="example-margin mr-10-IMP"
         >
           <mat-select
-            placeholder="{{ regionPlaceholder }}"
+            placeholder="{{ labels.regionLabel }}"
             name="region"
             [(ngModel)]="selectedRegion"
+            (ngModelChange)="regionChange()"
           >
             <mat-option [value]="region" *ngFor="let region of regions">{{
               region.title
             }}</mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-form-field
+          *ngIf="areaList.length > 0 && selectedQuery.area == 'Y'"
+          class="example-margin mr-10-IMP"
+        >
+          <mat-select
+            placeholder="{{ labels.areasLabel }}"
+            name="area"
+            [(ngModel)]="selectedArea"
+          >
+            <mat-option [value]="area" *ngFor="let area of areaList">{{
+              area.title
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </section>
-      <section class="example-section" *ngIf="selectedQuery.date=='Y'">
+      <section class="example-section" *ngIf="selectedQuery.date == 'Y'">
         <mat-form-field class="example-full-width mr-10-IMP">
           <input
             matInput
@@ -102,10 +122,14 @@
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
       </section>
-  
+
       <section class="example-section">
         <button
-          [disabled]="!selectedQuery.id || (selectedQuery.zone=='Y' && !selectedZone.id)"
+          [disabled]="
+            !selectedQuery.id ||
+            (selectedQuery.cluster == 'Y' && !selectedCluster.id) ||
+            (selectedQuery.zone == 'Y' && !selectedZone.id)
+          "
           mat-raised-button
           color="warn"
           (click)="getDashboardData()"
@@ -114,7 +138,5 @@
         </button>
       </section>
     </ng-container>
-   
-    </mat-card-content>
-  </mat-card>
-  
+  </mat-card-content>
+</mat-card>

@@ -182,15 +182,15 @@ export class FilterBarComponent implements OnInit {
       this.loadingReportMessage = true;
       const obj = {
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
         endDate: moment(this.endDate).format("YYYY-MM-DD"),
         channelId: this.arrayMaker(this.selectedChannel),
@@ -240,15 +240,15 @@ export class FilterBarComponent implements OnInit {
       this.loadingReportMessage = true;
       const obj = {
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
         endDate: moment(this.endDate).format("YYYY-MM-DD"),
         channelId: this.arrayMaker(this.selectedChannel),
@@ -368,8 +368,7 @@ export class FilterBarComponent implements OnInit {
     ) {
       this.getTabsData();
     }
-    if(this.router.url === "/dashboard/supervisor_productivity")
-    {
+    if (this.router.url === "/dashboard/supervisor_productivity") {
       this.getSupTabsData();
     }
 
@@ -411,8 +410,7 @@ export class FilterBarComponent implements OnInit {
     ) {
       this.getTabsData();
     }
-    if(this.router.url === "/dashboard/supervisor_productivity")
-    {
+    if (this.router.url === "/dashboard/supervisor_productivity") {
       this.getSupTabsData();
     }
     if (this.router.url !== "/dashboard/daily_visit_report") {
@@ -497,15 +495,15 @@ export class FilterBarComponent implements OnInit {
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
         endDate: moment(this.endDate).format("YYYY-MM-DD"),
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         // channelId: this.arrayMaker(this.selectedChannel),
       };
 
@@ -553,15 +551,15 @@ export class FilterBarComponent implements OnInit {
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
         endDate: moment(this.endDate).format("YYYY-MM-DD"),
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         type: this.selectedOption,
         // channelId: this.arrayMaker(this.selectedChannel),
       };
@@ -607,15 +605,15 @@ export class FilterBarComponent implements OnInit {
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
         endDate: moment(this.endDate).format("YYYY-MM-DD"),
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         // channelId: this.arrayMaker(this.selectedChannel),
       };
 
@@ -663,15 +661,15 @@ export class FilterBarComponent implements OnInit {
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
         endDate: moment(this.endDate).format("YYYY-MM-DD"),
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         // channelId: this.arrayMaker(this.selectedChannel),
       };
 
@@ -717,15 +715,15 @@ export class FilterBarComponent implements OnInit {
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
         endDate: moment(this.endDate).format("YYYY-MM-DD"),
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         channelId: this.selectedChannel.id || -1,
         areaId: "",
         distId: "",
@@ -767,15 +765,15 @@ export class FilterBarComponent implements OnInit {
     } else {
       const obj = {
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         startDate: moment(this.startDate).format("YYYY-MM-DD"),
       };
       this.httpService.getMerchandiserList(obj).subscribe(
@@ -811,15 +809,15 @@ export class FilterBarComponent implements OnInit {
 
     const obj = {
       zoneId: this.selectedZone.id
-      ? this.selectedZone.id == -1
-        ? localStorage.getItem("zoneId")
-        : this.selectedZone.id
-      : localStorage.getItem("zoneId"),
-    regionId: this.selectedRegion.id
-      ? this.selectedRegion.id == -1
-        ? localStorage.getItem("regionId")
-        : this.selectedRegion.id
-      : localStorage.getItem("regionId"),
+        ? this.selectedZone.id == -1
+          ? localStorage.getItem("zoneId")
+          : this.selectedZone.id
+        : localStorage.getItem("zoneId"),
+      regionId: this.selectedRegion.id
+        ? this.selectedRegion.id == -1
+          ? localStorage.getItem("regionId")
+          : this.selectedRegion.id
+        : localStorage.getItem("regionId"),
       startDate: moment(this.startDate).format("YYYY-MM-DD"),
       reportType: "",
       surveyorId: this.selectedMerchandiser.id,
@@ -985,15 +983,15 @@ export class FilterBarComponent implements OnInit {
       this.loadingReportMessage = true;
       const obj = {
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         cityId: this.selectedCity.id || -1,
         areaId: this.selectedArea.id || -1,
         channelId: this.arrayMaker(this.selectedChannel),
@@ -1066,15 +1064,15 @@ export class FilterBarComponent implements OnInit {
       this.loadingReportMessage = true;
       const obj = {
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         cityId: this.selectedCity.id || -1,
         areaId: this.selectedArea.id || -1,
         channelId: this.arrayMaker(this.selectedChannel),
@@ -1140,15 +1138,15 @@ export class FilterBarComponent implements OnInit {
       this.loadingReportMessage = true;
       const obj = {
         zoneId: this.selectedZone.id
-        ? this.selectedZone.id == -1
-          ? localStorage.getItem("zoneId")
-          : this.selectedZone.id
-        : localStorage.getItem("zoneId"),
-      regionId: this.selectedRegion.id
-        ? this.selectedRegion.id == -1
-          ? localStorage.getItem("regionId")
-          : this.selectedRegion.id
-        : localStorage.getItem("regionId"),
+          ? this.selectedZone.id == -1
+            ? localStorage.getItem("zoneId")
+            : this.selectedZone.id
+          : localStorage.getItem("zoneId"),
+        regionId: this.selectedRegion.id
+          ? this.selectedRegion.id == -1
+            ? localStorage.getItem("regionId")
+            : this.selectedRegion.id
+          : localStorage.getItem("regionId"),
         cityId: this.selectedCity.id || -1,
         distributionId: this.selectedDistribution.id || -1,
         storeType: this.selectedStoreType || null,
@@ -1228,22 +1226,22 @@ export class FilterBarComponent implements OnInit {
     this.loading = true;
     const obj: any = {
       zoneId: this.selectedZone.id
-      ? this.selectedZone.id == -1
-        ? localStorage.getItem("zoneId")
-        : this.selectedZone.id
-      : localStorage.getItem("zoneId"),
-    regionId: this.selectedRegion.id
-      ? this.selectedRegion.id == -1
-        ? localStorage.getItem("regionId")
-        : this.selectedRegion.id
-      : localStorage.getItem("regionId"),
+        ? this.selectedZone.id == -1
+          ? localStorage.getItem("zoneId")
+          : this.selectedZone.id
+        : localStorage.getItem("zoneId"),
+      regionId: this.selectedRegion.id
+        ? this.selectedRegion.id == -1
+          ? localStorage.getItem("regionId")
+          : this.selectedRegion.id
+        : localStorage.getItem("regionId"),
       startDate: startDate,
       endDate: endDate,
       cityId: this.selectedCity.id || -1,
       distributionId: this.selectedDistribution.id || -1,
       storeType: this.selectedStoreType || null,
       channelId: -1,
-      type:1
+      type: 1,
     };
     localStorage.setItem("obj", JSON.stringify(obj));
     this.getTableData(obj);
@@ -1268,7 +1266,7 @@ export class FilterBarComponent implements OnInit {
     );
   }
   getTableData(obj) {
-    this.httpService.merchandiserShopListCBL(obj).subscribe(
+    this.httpService.merchandiserShopList(obj).subscribe(
       (data) => {
         console.log(data, "table data");
         const res: any = data;
@@ -1298,7 +1296,6 @@ export class FilterBarComponent implements OnInit {
         ? moment(data).format("YYYY-MM-DD")
         : moment(this.endDate).format("YYYY-MM-DD");
 
-
     this.loading = true;
     const obj: any = {
       zoneId: this.selectedZone.id
@@ -1310,7 +1307,7 @@ export class FilterBarComponent implements OnInit {
       startDate: startDate,
       endDate: endDate,
       cityId: this.selectedCity.id || -1,
-      type:2,
+      type: 2,
       channelId: -1,
     };
     localStorage.setItem("obj", JSON.stringify(obj));
@@ -1336,7 +1333,7 @@ export class FilterBarComponent implements OnInit {
     );
   }
   getSupTableData(obj) {
-    this.httpService.merchandiserShopListCBL(obj).subscribe(
+    this.httpService.merchandiserShopList(obj).subscribe(
       (data) => {
         console.log(data, "table data");
         const res: any = data;
@@ -1435,6 +1432,47 @@ export class FilterBarComponent implements OnInit {
           console.log(data, "Vo Error Data");
           const res: any = data;
 
+          if (res) {
+            const obj2 = {
+              key: res.key,
+              fileType: "json.fileType",
+            };
+            const url = "downloadReport";
+            this.getproductivityDownload(obj2, url);
+          } else {
+            this.clearLoading();
+
+            this.toastr.info(
+              "Something went wrong,Please retry",
+              "Connectivity Message"
+            );
+          }
+        },
+        (error) => {
+          this.clearLoading();
+        }
+      );
+    } else {
+      this.clearLoading();
+      this.toastr.info(
+        "End date must be greater than start date",
+        "Date Selection"
+      );
+    }
+  }
+
+  getAttendanceReport() {
+    if (this.endDate >= this.startDate) {
+      const obj = {
+        startDate: moment(this.startDate).format("YYYY-MM-DD"),
+        endDate: moment(this.endDate).format("YYYY-MM-DD"),
+      };
+      const url = "merchandiser_attendance_report";
+      const body = this.httpService.UrlEncodeMaker(obj);
+      this.httpService.getKeyForProductivityReport(body, url).subscribe(
+        (data) => {
+          console.log(data, "attendance");
+          const res: any = data;
           if (res) {
             const obj2 = {
               key: res.key,

@@ -22,20 +22,20 @@ export class RawDataComponent implements OnInit {
   reportId = -1;
   title = "";
   selectedReportUrl = "";
-  clusterList:any=[];
-  zones:any=[];
-  regions:any=[];
-  selectedZone:any={};
-  selectedRegion:any={};
-  selectedCluster:any={};
-  clusterId:any;
-
-  zonePlaceholder = "";
-  regionPlaceholder = "";
-  clusterPlaceHolder = "";
-  projectType:any;
-  queryParams:any=[];
-  regionList:any=[];
+  clusterList: any = [];
+  zones: any = [];
+  regions: any = [];
+  selectedZone: any = {};
+  selectedRegion: any = {};
+  selectedCluster: any = {};
+  clusterId: any;
+  labels: any;
+  projectType: any;
+  queryParams: any = [];
+  areaList: any = [];
+  selectedArea: any = {};
+  isDashboardDataRequest: boolean = true;
+  areas: any = [];
 
   constructor(
     private activatedRoutes: ActivatedRoute,
@@ -45,37 +45,64 @@ export class RawDataComponent implements OnInit {
   ) {
     this.clusterList = JSON.parse(localStorage.getItem("clusterList"));
     this.zones = JSON.parse(localStorage.getItem("zoneList"));
-    this.clusterId = localStorage.getItem("clusterId") || -1;
     this.projectType = localStorage.getItem("projectType");
-    if (this.projectType == "NFL" || this.projectType == "NFL_SO") {
-      this.zonePlaceholder = "Region";
-      this.regionPlaceholder = "Zone";
-    } else {
-      this.zonePlaceholder = "Zone";
-      this.regionPlaceholder = "Region";
-    }
-    this.clusterPlaceHolder = "Cluster";
+    this.labels = JSON.parse(localStorage.getItem("labelProperties"));
   }
 
   ngOnInit() {
     this.activatedRoutes.params.subscribe((params) => {
       if (params.reportId) {
         this.reportId = params.reportId;
+        this.isDashboardDataRequest = false;
       }
       this.getQueryTypeList(this.reportId);
     });
-    this.getAllRegions();
   }
 
-  getQueryTypeList(reportId) {
+  async getZone() {
+    const data: any = await this.httpService.getZone().toPromise();
+    if (data.zoneList) {
+      this.zones = data.zoneList;
+    }
+  }
+
+  async zoneChange() {
+    if (this.selectedQuery.region == "Y") {
+      this.loadingData = true;
+      this.selectedRegion = {};
+      const data: any = await this.httpService
+        .getRegion(this.selectedZone.id || -1)
+        .toPromise();
+      if (data) {
+        this.regions = data;
+        console.log(this.regions);
+      }
+      this.clearLoading();
+    }
+  }
+
+  async regionChange() {
+    if (this.selectedQuery.area == "Y") {
+      this.loadingData = true;
+      this.selectedArea = {};
+      const data: any = await this.httpService
+        .getAreaByRegion(this.selectedRegion.id || -1)
+        .toPromise();
+      if (data) {
+        this.areaList = data;
+      }
+      this.clearLoading();
+    }
+  }
+  getQueryTypeList(reportId: number) {
     this.loadingData = true;
     this.httpService.getQueryTypeList(-1).subscribe(
       (data) => {
         console.log("qurry list", data);
         if (data) {
           this.queryList = data;
-   
-            this.loadQuery(reportId);
+
+          this.loadQuery(reportId);
         }
         this.loadingData = false;
       },
@@ -88,29 +115,59 @@ export class RawDataComponent implements OnInit {
     );
   }
 
-  getDashboardData() {
+  async getDashboardData() {
     if (this.endDate >= this.startDate) {
       this.loadingData = true;
       this.loadingReportMessage = true;
       // tslint:disable-next-line:triple-equals
       const obj = {
         queryId: this.selectedQuery.id,
-        clusterId: this.selectedCluster.id
-        ? this.selectedCluster.id == -1
-          ? localStorage.getItem("clusterId")
-          : this.selectedCluster.id
-        : localStorage.getItem("clusterId"),
-      zoneId: this.zoneCheck(),
-      regionId: this.regionCheck(),
-        startDate: this.selectedQuery.date=='Y'? moment(this.startDate).format("YYYY-MM-DD"): -1,
-        endDate: this.selectedQuery.date=='Y'?moment(this.endDate).format("YYYY-MM-DD"):-1,
+        clusterId:
+          this.selectedQuery.cluster == "Y"
+            ? this.selectedCluster.id
+              ? this.selectedCluster.id == -1
+                ? localStorage.getItem("clusterId")
+                : this.selectedCluster.id
+              : localStorage.getItem("clusterId")
+            : null,
+        zoneId:
+          this.selectedQuery.zone == "Y"
+            ? this.selectedZone.id
+              ? this.selectedZone.id == -1
+                ? localStorage.getItem("zoneId")
+                : this.selectedZone.id
+              : localStorage.getItem("zoneId")
+            : null,
+        regionId:
+          this.selectedQuery.region == "Y"
+            ? this.selectedRegion.id
+              ? this.selectedRegion.id == -1
+                ? localStorage.getItem("regionId")
+                : this.selectedRegion.id
+              : localStorage.getItem("regionId")
+            : null,
+        areaId:
+          this.selectedQuery.area == "Y"
+            ? this.selectedArea.id
+              ? this.selectedArea.id == -1
+                ? localStorage.getItem("areaId")
+                : this.selectedArea.id
+              : localStorage.getItem("areaId")
+            : null,
+        startDate:
+          this.selectedQuery.date == "Y"
+            ? moment(this.startDate).format("YYYY-MM-DD")
+            : null,
+        endDate:
+          this.selectedQuery.date == "Y"
+            ? moment(this.endDate).format("YYYY-MM-DD")
+            : null,
       };
 
       const url = "dashboard-data";
       const body = this.httpService.UrlEncodeMaker(obj);
       this.httpService.getKeyForProductivityReport(body, url).subscribe(
         (data) => {
-          console.log(data, "query list");
           const res: any = data;
 
           if (res) {
@@ -148,7 +205,7 @@ export class RawDataComponent implements OnInit {
     }
   }
 
-  getproductivityDownload(obj, url) {
+  getproductivityDownload(obj: { key: any; fileType: any }, url: string) {
     const u = url;
     this.httpService.DownloadResource(obj, u);
     setTimeout(() => {
@@ -164,139 +221,128 @@ export class RawDataComponent implements OnInit {
   }
 
   getZoneByCluster() {
-    if(this.selectedQuery.zone=='Y'){
-    this.loadingData = true;
-    this.selectedZone = {};
-    this.selectedRegion = {};
-    this.httpService.getZoneByCluster(this.selectedCluster.id || -1).subscribe(
-      (data) => {
-        const res: any = data;
-        if (res) {
-          this.zones = res;
-        }
-        this.loadingData = false;
-      },
-      (error) => {
-        error.status === 0
-          ? this.toastr.error("Please check Internet Connection", "Error")
-          : this.toastr.error(error.description, "Error");
-        this.loadingData = false;
-      }
-    );
+    if (this.selectedQuery.zone == "Y") {
+      this.loadingData = true;
+      this.selectedZone = {};
+      this.selectedRegion = {};
+      this.httpService
+        .getZoneByCluster(this.selectedCluster.id || -1)
+        .subscribe(
+          (data) => {
+            const res: any = data;
+            if (res) {
+              this.zones = res;
+            }
+            this.loadingData = false;
+          },
+          (error) => {
+            error.status === 0
+              ? this.toastr.error("Please check Internet Connection", "Error")
+              : this.toastr.error(error.description, "Error");
+            this.loadingData = false;
+          }
+        );
     }
   }
 
-  zoneChange() {
-    if(this.selectedQuery.region=='Y'){
-    this.loadingData = true;
-    this.selectedRegion = {};
-
-    this.httpService.getRegion(this.selectedZone.id).subscribe(
-      (data) => {
-        const res: any = data;
-        if (res) {
-          this.regions = res;
-        } else {
-          this.clearLoading();
-
-          this.toastr.info(
-            "Something went wrong,Please retry",
-            "Connectivity Message"
-          );
-        }
-
-        setTimeout(() => {
-          this.loadingData = false;
-        }, 500);
-      },
-      (error) => {
-        this.clearLoading();
+  async zoneCheck() {
+    const zoneId = this.selectedZone.id
+      ? this.selectedZone.id == -1
+        ? localStorage.getItem("zoneId")
+        : this.selectedZone.id
+      : localStorage.getItem("zoneId");
+    let zoneArray: any = [];
+    if (zoneId == -1 && this.selectedQuery.zone == "Y") {
+      if (this.zones.length == 0) {
+        await this.getZone();
       }
-    );
-  }
-
-  }
-  zoneCheck(){
-    const zoneId=this.selectedZone.id
-    ? this.selectedZone.id == -1
-      ? localStorage.getItem("zoneId")
-      : this.selectedZone.id
-    : localStorage.getItem("zoneId");
-    let zoneArray:any=[];
-    if(zoneId==-1 && this.selectedQuery.zone=='Y'){
-      this.zones.forEach((e) => {
-        if(e.id!=-1){
+      this.zones.forEach((e: { id: number }) => {
+        if (e.id != -1) {
           zoneArray.push(e.id);
         }
       });
-      zoneArray=zoneArray.join();
+      zoneArray = zoneArray.join();
       return zoneArray;
     }
     return zoneId;
   }
-  regionCheck(){
-    const regionId=this.selectedRegion.id
-    ? this.selectedRegion.id == -1
-      ? localStorage.getItem("regionId")
-      : this.selectedRegion.id
-    : localStorage.getItem("regionId");
-    let regionArray:any=[];
-    if(regionId==-1 && this.selectedQuery.region=='Y'){
-      this.regions.forEach((e) => {
-        if(e.id!=-1){
+  async regionCheck() {
+    const regionId = this.selectedRegion.id
+      ? this.selectedRegion.id == -1
+        ? localStorage.getItem("regionId")
+        : this.selectedRegion.id
+      : localStorage.getItem("regionId");
+    let regionArray: any = [];
+    if (regionId == -1 && this.selectedQuery.region == "Y") {
+      if (this.regions.length == 0) {
+        await this.zoneChange();
+      }
+      this.regions.forEach((e: { id: number }) => {
+        console.log(e.id);
+        if (e.id != -1) {
           regionArray.push(e.id);
         }
       });
-      if(regionArray.length==0){
-        this.regionList.forEach((e) => {
-          if(e.id!=-1){
-            regionArray.push(e.id);
-          }
-        });
-      }
-      regionArray=regionArray.join();
+      regionArray = regionArray.join();
       return regionArray;
     }
     return regionId;
   }
 
-  getAllRegions() {
-    this.loadingData = true;
-    this.httpService.getRegions().subscribe(
-      (data) => {
-        const res: any = data;
-        if (res.regionList) {
-          this.regionList = res.regionList;
-        }
-        if (!res.regionList) {
-          this.toastr.info("No data Found For Regions", "Info");
-        }
-        this.clearLoading();
-      },
-      (error) => {
-        this.clearLoading();
-        error.status === 0
-          ? this.toastr.error("Please check Internet Connection", "Error")
-          : this.toastr.error(error.description, "Error");
+  async areaCheck() {
+    const areaId = this.selectedArea.id
+      ? this.selectedArea.id == -1
+        ? localStorage.getItem("areaId")
+        : this.selectedArea.id
+      : localStorage.getItem("areaId");
+    let areaArray: any = [];
+    if (areaId == -1 && this.selectedQuery.area == "Y") {
+      if (this.areaList.length == 0) {
+        await this.regionChange();
       }
-    );
-  }
-  loadQuery(reportId){
-    if(reportId>-1){
-    for(const element of this.queryList){
-      if(element.id==reportId){
-        this.selectedQuery=element;
-        this.title = this.selectedQuery.title;
-        break;
-      }
+      this.areaList.forEach((e: { id: number }) => {
+        if (e.id != -1) {
+          areaArray.push(e.id);
+        }
+      });
+      areaArray = areaArray.join();
+      return areaArray;
     }
-    this.queryList=[];
-    this.queryList.push(this.selectedQuery);
+    return areaId;
   }
-  else
-  {
-    this.title="Raw Data"
+  loadQuery(reportId: number) {
+    if (reportId > -1) {
+      for (const element of this.queryList) {
+        if (element.id == reportId) {
+          this.selectedQuery = element;
+          this.title = this.selectedQuery.title;
+          break;
+        }
+      }
+      this.queryList = [];
+      this.queryList.push(this.selectedQuery);
+    } else {
+      this.title = "Raw Data";
+    }
+    this.selectedQuery = this.queryList[0];
   }
-  this.selectedQuery = this.queryList[0];
+
+  clusterCheck() {
+    const clusterId = this.selectedCluster.id
+      ? this.selectedCluster.id == -1
+        ? localStorage.getItem("clusterId")
+        : this.selectedCluster.id
+      : localStorage.getItem("clusterId");
+    let clusterArray: any = [];
+    if (clusterId == -1 && this.selectedQuery.cluster == "Y") {
+      this.clusterList.forEach((e: { id: number }) => {
+        if (e.id != -1) {
+          clusterArray.push(e.id);
+        }
+      });
+      clusterArray = clusterArray.join();
+      return clusterArray;
+    }
+    return clusterId;
   }
 }

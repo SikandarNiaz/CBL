@@ -81,7 +81,7 @@ export class DashboardService {
       body = this.UrlEncodeMaker(obj);
       // `zoneId=${obj.zoneId}&regionId=${obj.regionId}&endDate=${obj.endDate}&startDate=${obj.startDate}&distributionId=${obj.distributionId}&cityId=${obj.cityId}&storeType=${obj.storeType}&channelId=${obj.channelId}`;
     }
-    const url = this.ip + "dashboardDataCBL";
+    const url = this.ip + "dashboardDataSummary";
     return this.http.post(url, body, this.httpOptions);
     // .pipe(
     //   timeout(60000),
@@ -117,7 +117,7 @@ export class DashboardService {
   getTableList(obj) {
     const body = this.UrlEncodeMaker(obj);
     // `zoneId=${obj.zoneId}&regionId=${obj.regionId}&endDate=${obj.endDate}&startDate=${obj.startDate}&merchandiserId=${obj.merchandiserId}`;
-    const url = this.ip + "completedShopListCBL";
+    const url = this.ip + "completedShopList";
     return this.http.post(url, body, this.httpOptions);
     // .pipe(
     //   timeout(60000),
@@ -134,9 +134,9 @@ export class DashboardService {
     return this.http.post(url, urlEncode, this.httpOptions);
   }
 
-  merchandiserShopListCBL(obj) {
+  merchandiserShopList(obj) {
     const body = `zoneId=${obj.zoneId}&regionId=${obj.regionId}&endDate=${obj.endDate}&startDate=${obj.startDate}&distributionId=${obj.distributionId}&cityId=${obj.cityId}&storeType=${obj.storeType}&channelId=${obj.channelId}&type=${obj.type}`;
-    const url = this.ip + "merchandiserShopListCBL";
+    const url = this.ip + "merchandiserShopList";
     return this.http.post(url, body, this.httpOptions);
     // .pipe(
     //   timeout(60000),
@@ -161,7 +161,6 @@ export class DashboardService {
     //   })
     // );
   }
-
 
   getQueryTypeList(reportId) {
     this.user_id = localStorage.getItem("user_id");
@@ -400,4 +399,15 @@ export class DashboardService {
     return this.http.post(url, filter);
   }
 
+  getAreaByRegion(regionId) {
+    this.user_id = localStorage.getItem("user_id");
+
+    const filter = JSON.stringify({
+      act: 27,
+      regionId: regionId,
+      userId: this.user_id,
+    });
+    const url = this.ip + "loadFilters";
+    return this.http.post(url, filter);
+  }
 }

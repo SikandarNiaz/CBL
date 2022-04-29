@@ -115,9 +115,10 @@ export class MerchandiserListComponent implements OnInit {
   loadEvaluationSummary() {
     this.cardLoading = true;
     const obj = {
-      evaluatorId: localStorage.getItem("user_id"),
-      selectedEvaluator: this.selectedEvaluator.id || -1,
-      userTypeId: this.userTypeId,
+      evaluatorId:
+        this.userTypeId == this.ReEvaluatorId
+          ? this.selectedEvaluator.id || -1
+          : localStorage.getItem("user_id"),
       startDate: moment(this.startDate).format("YYYY-MM-DD"),
       endDate: moment(this.endDate).format("YYYY-MM-DD"),
     };

@@ -1,96 +1,163 @@
 <!-- merchandixer list for evaluation  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/merchandiser_List' ">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/merchandiser_List'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-
-        </mat-card-title>
-        <section class="example-section">
-
-
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-
-        </section>
-
-        <!-- <section class="example-section">
+    <!-- <section class="example-section">
             <button *ngIf="router.url==='/dashboard/merchandiser_List'" [disabled]="selectedChannel.length<1" mat-raised-button color="warn" (click)="getDashboardDataAvailability()">Download</button>
             <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span>
 
         </section> -->
-
-    </mat-card-content>
+  </mat-card-content>
 </mat-card>
 <!-- /merchandiser list for evaluation -->
 <!--  /brand_sku_oos  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/brand_sku_oos' ">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/brand_sku_oos'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="areas.length > 0" class="example-margin mr-10-IMP">
+        <mat-select placeholder="Areas" name="areas" [(ngModel)]="selectedArea">
+          <mat-option [value]="area" *ngFor="let area of areas">{{
+            area.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select placeholder="City" name="city" [(ngModel)]="selectedCity">
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <mat-form-field
+        *ngIf="channels.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <!-- {{selectedChannel |json }} -->
+        <mat-select
+          placeholder="Channel"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+          multiple
+          #channelSelect="ngModel"
+          [compareWith]="equals"
+        >
+          <mat-option disabled="disabled" class="filter-option">
+            <button
+              mat-raised-button
+              class="mat-primary fill text-sm"
+              (click)="selectAll(channelSelect, channels)"
+            >
+              Select All
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="ml-1 mat-accent fill text-sm"
+              (click)="deselectAll(channelSelect)"
+            >
+              Deselect All
+            </button>
+          </mat-option>
 
-        </mat-card-title>
-        <section class="example-section">
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="areas.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Areas" name='areas' [(ngModel)]="selectedArea">
-                    <mat-option [value]="area" *ngFor="let area of areas">{{area.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-        </section>
-        <section class="example-section">
-
-            <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
-                <!-- {{selectedChannel |json }} -->
-                <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
-                    <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
-                            Select All
-                          </button>
-                        <button mat-raised-button color="warn" class="ml-1 mat-accent fill text-sm" (click)="deselectAll(channelSelect)">
-                            Deselect All
-                          </button>
-                    </mat-option>
-
-                    <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
+          <mat-option [value]="channel" *ngFor="let channel of channels">{{
+            channel.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="Category" name='category' [(ngModel)]="selectedCategory" (ngModelChange)="categoryChange()">
                     <mat-option [value]="category" *ngFor="let category of categoryList" [class.active]=true>{{category.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
 
-            <!-- <mat-form-field *ngIf="productsList.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="productsList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="product" name='product' [(ngModel)]="selectedProduct" multiple>
                     <mat-option value="all">Select All</mat-option>
                     <mat-option [value]="product" *ngFor="let product of productsList">{{product.title}}</mat-option>
@@ -101,94 +168,180 @@
                     <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{lv}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
-            <mat-form-field *ngIf="mustHaveAll.length>0" class="example-margin mr-5-IMP">
-                <mat-select placeholder="MSL" name='mustHave' [(ngModel)]="selectedMustHaveAll">
-                    <mat-option [value]="m.key" *ngFor="let m of mustHaveAll">{{m.value}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+      <mat-form-field
+        *ngIf="mustHaveAll.length > 0"
+        class="example-margin mr-5-IMP"
+      >
+        <mat-select
+          placeholder="MSL"
+          name="mustHave"
+          [(ngModel)]="selectedMustHaveAll"
+        >
+          <mat-option [value]="m.key" *ngFor="let m of mustHaveAll">{{
+            m.value
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <button *ngIf="router.url==='/dashboard/brand_sku_oos'" [disabled]="selectedChannel.length<1" mat-raised-button color="warn" (click)="getBrandSKUOOS()">Download</button>
-            <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span>
-
-        </section>
-
-    </mat-card-content>
+    <section class="example-section">
+      <button
+        *ngIf="router.url === '/dashboard/brand_sku_oos'"
+        [disabled]="selectedChannel.length < 1"
+        mat-raised-button
+        color="warn"
+        (click)="getBrandSKUOOS()"
+      >
+        Download
+      </button>
+      <span *ngIf="selectedChannel.length < 1" class="channel-message"
+        ><small>(channel selection is mandatory)</small></span
+      >
+    </section>
+  </mat-card-content>
 </mat-card>
 <!--  / brand_sku_oos -->
 
 <!-- data abnormality  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/data_abnormality_report' ">
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/data_abnormality_report'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="areas.length > 0" class="example-margin mr-10-IMP">
+        <mat-select placeholder="Areas" name="areas" [(ngModel)]="selectedArea">
+          <mat-option [value]="area" *ngFor="let area of areas">{{
+            area.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select placeholder="City" name="city" [(ngModel)]="selectedCity">
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <mat-form-field
+        *ngIf="channels.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <!-- {{selectedChannel |json }} -->
+        <mat-select
+          placeholder="Channel"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+          multiple
+          #channelSelect="ngModel"
+          [compareWith]="equals"
+        >
+          <mat-option disabled="disabled" class="filter-option">
+            <button
+              mat-raised-button
+              class="mat-primary fill text-sm"
+              (click)="selectAll(channelSelect, channels)"
+            >
+              Select All
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="ml-1 mat-accent fill text-sm"
+              (click)="deselectAll(channelSelect)"
+            >
+              Deselect All
+            </button>
+          </mat-option>
 
-        </mat-card-title>
-        <section class="example-section">
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="areas.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Areas" name='areas' [(ngModel)]="selectedArea">
-                    <mat-option [value]="area" *ngFor="let area of areas">{{area.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-        </section>
-        <section class="example-section">
-
-            <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
-                <!-- {{selectedChannel |json }} -->
-                <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
-                    <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
-                            Select All
-                          </button>
-                        <button mat-raised-button color="warn" class="ml-1 mat-accent fill text-sm" (click)="deselectAll(channelSelect)">
-                            Deselect All
-                          </button>
-                    </mat-option>
-
-                    <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
+          <mat-option [value]="channel" *ngFor="let channel of channels">{{
+            channel.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="Category" name='category' [(ngModel)]="selectedCategory" (ngModelChange)="categoryChange()">
                     <mat-option [value]="category" *ngFor="let category of categoryList" [class.active]=true>{{category.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
 
-            <!-- <mat-form-field *ngIf="productsList.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="productsList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="product" name='product' [(ngModel)]="selectedProduct" multiple>
                     <mat-option value="all">Select All</mat-option>
                     <mat-option [value]="product" *ngFor="let product of productsList">{{product.title}}</mat-option>
@@ -199,168 +352,315 @@
                     <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{lv}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
-            <!-- <mat-form-field *ngIf="mustHave.length>0" class="example-margin mr-5-IMP">
+      <!-- <mat-form-field *ngIf="mustHave.length>0" class="example-margin mr-5-IMP">
                 <mat-select placeholder="Must Have" name='mustHave' [(ngModel)]="selectedMustHave">
                     <mat-option [value]="m.key" *ngFor="let m of mustHave">{{m.value}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
 
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <button *ngIf="router.url==='/dashboard/data_abnormality_report'" [disabled]="selectedChannel.length<1" mat-raised-button color="warn" (click)="getAbnormalityReport()">Download</button>
-            <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span>
-
-        </section>
-
-    </mat-card-content>
+    <section class="example-section">
+      <button
+        *ngIf="router.url === '/dashboard/data_abnormality_report'"
+        [disabled]="selectedChannel.length < 1"
+        mat-raised-button
+        color="warn"
+        (click)="getAbnormalityReport()"
+      >
+        Download
+      </button>
+      <span *ngIf="selectedChannel.length < 1" class="channel-message"
+        ><small>(channel selection is mandatory)</small></span
+      >
+    </section>
+  </mat-card-content>
 </mat-card>
 <!-- /data abnormality -->
 
 <!-- shop list  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/shop_list_report' ">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/shop_list_report'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="areas.length > 0" class="example-margin mr-10-IMP">
+        <mat-select placeholder="Areas" name="areas" [(ngModel)]="selectedArea">
+          <mat-option [value]="area" *ngFor="let area of areas">{{
+            area.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select placeholder="City" name="city" [(ngModel)]="selectedCity">
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <mat-form-field
+        *ngIf="channels.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <!-- {{selectedChannel |json }} -->
+        <mat-select
+          placeholder="Channel"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+          multiple
+          #channelSelect="ngModel"
+          [compareWith]="equals"
+        >
+          <mat-option disabled="disabled" class="filter-option">
+            <button
+              mat-raised-button
+              class="mat-primary fill text-sm"
+              (click)="selectAll(channelSelect, channels)"
+            >
+              Select All
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="ml-1 mat-accent fill text-sm"
+              (click)="deselectAll(channelSelect)"
+            >
+              Deselect All
+            </button>
+          </mat-option>
 
-        </mat-card-title>
-        <section class="example-section">
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="areas.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Areas" name='areas' [(ngModel)]="selectedArea">
-                    <mat-option [value]="area" *ngFor="let area of areas">{{area.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-        </section>
-        <section class="example-section">
-
-            <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
-                <!-- {{selectedChannel |json }} -->
-                <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
-                    <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
-                            Select All
-                          </button>
-                        <button mat-raised-button color="warn" class="ml-1 mat-accent fill text-sm" (click)="deselectAll(channelSelect)">
-                            Deselect All
-                          </button>
-                    </mat-option>
-
-                    <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
+          <mat-option [value]="channel" *ngFor="let channel of channels">{{
+            channel.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="Category" name='category' [(ngModel)]="selectedCategory" (ngModelChange)="categoryChange()">
                     <mat-option [value]="category" *ngFor="let category of categoryList" [class.active]=true>{{category.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
 
-            <mat-form-field *ngIf="productsList.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="product" name='product' [(ngModel)]="selectedProduct" multiple>
-                    <mat-option value="all">Select All</mat-option>
-                    <mat-option [value]="product" *ngFor="let product of productsList">{{product.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
-                <mat-select placeholder="Last Visit" name='lastVisit' [(ngModel)]="selectedLastVisit">
-                    <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{lv}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <!-- <mat-form-field *ngIf="mustHave.length>0" class="example-margin mr-5-IMP">
+      <mat-form-field
+        *ngIf="productsList.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="product"
+          name="product"
+          [(ngModel)]="selectedProduct"
+          multiple
+        >
+          <mat-option value="all">Select All</mat-option>
+          <mat-option [value]="product" *ngFor="let product of productsList">{{
+            product.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="lastVisit.length > 0"
+        class="example-margin mr-5-IMP"
+      >
+        <mat-select
+          placeholder="Last Visit"
+          name="lastVisit"
+          [(ngModel)]="selectedLastVisit"
+        >
+          <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{
+            lv
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- <mat-form-field *ngIf="mustHave.length>0" class="example-margin mr-5-IMP">
                 <mat-select placeholder="Must Have" name='mustHave' [(ngModel)]="selectedMustHave">
                     <mat-option [value]="m.key" *ngFor="let m of mustHave">{{m.value}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
 
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <button *ngIf="router.url==='/dashboard/shop_list_report'" [disabled]="selectedChannel.length<1" mat-raised-button color="warn" (click)="getOOSShopListReport()">Download</button>
-            <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span>
-
-        </section>
-
-    </mat-card-content>
+    <section class="example-section">
+      <button
+        *ngIf="router.url === '/dashboard/shop_list_report'"
+        [disabled]="selectedChannel.length < 1"
+        mat-raised-button
+        color="warn"
+        (click)="getOOSShopListReport()"
+      >
+        Download
+      </button>
+      <span *ngIf="selectedChannel.length < 1" class="channel-message"
+        ><small>(channel selection is mandatory)</small></span
+      >
+    </section>
+  </mat-card-content>
 </mat-card>
 <!-- /shop list -->
 <!-- shop summary  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/summary_report'">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/summary_report'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="areas.length > 0" class="example-margin mr-10-IMP">
+        <mat-select placeholder="Areas" name="areas" [(ngModel)]="selectedArea">
+          <mat-option [value]="area" *ngFor="let area of areas">{{
+            area.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select placeholder="City" name="city" [(ngModel)]="selectedCity">
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        </mat-card-title>
-        <section class="example-section">
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="areas.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Areas" name='areas' [(ngModel)]="selectedArea">
-                    <mat-option [value]="area" *ngFor="let area of areas">{{area.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="Category" name='category' [(ngModel)]="selectedCategory" (ngModelChange)="categoryChange()">
                     <mat-option [value]="category" *ngFor="let category of categoryList">{{category.title}}</mat-option>
                 </mat-select>
@@ -371,32 +671,48 @@
                     <mat-option [value]="product" *ngFor="let product of productsList">{{product.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
+    </section>
 
+    <section class="example-section">
+      <mat-form-field
+        *ngIf="channels.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <!-- {{selectedChannel |json }} -->
+        <mat-select
+          placeholder="Channel"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+          multiple
+          #channelSelect="ngModel"
+          [compareWith]="equals"
+        >
+          <mat-option disabled="disabled" class="filter-option">
+            <button
+              mat-raised-button
+              class="mat-primary fill text-sm"
+              (click)="selectAll(channelSelect, channels)"
+            >
+              Select All
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="ml-1 mat-accent fill text-sm"
+              (click)="deselectAll(channelSelect)"
+            >
+              Deselect All
+            </button>
+          </mat-option>
 
-
-
-
-
-        </section>
-
-        <section class="example-section">
-            <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
-                <!-- {{selectedChannel |json }} -->
-                <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
-                    <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
-                        Select All
-                      </button>
-                        <button mat-raised-button color="warn" class="ml-1 mat-accent fill text-sm" (click)="deselectAll(channelSelect)">
-                        Deselect All
-                      </button>
-                    </mat-option>
-
-                    <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </section>
-        <section class="example-section">
-            <!-- <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
+          <mat-option [value]="channel" *ngFor="let channel of channels">{{
+            channel.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <!-- <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
                 <mat-select placeholder="Last Visit" name='lastVisit' [(ngModel)]="selectedLastVisit">
                     <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{lv}}</mat-option>
                 </mat-select>
@@ -407,67 +723,114 @@
                 </mat-select>
             </mat-form-field> -->
 
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-
-        </section>
-
-        <section class="example-section">
-            <button *ngIf="router.url==='/dashboard/summary_report'" [disabled]="selectedChannel.length<1" mat-raised-button color="warn" (click)="getOOSSummary()">Download</button>
-            <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span>
-
-        </section>
-
-    </mat-card-content>
+    <section class="example-section">
+      <button
+        *ngIf="router.url === '/dashboard/summary_report'"
+        [disabled]="selectedChannel.length < 1"
+        mat-raised-button
+        color="warn"
+        (click)="getOOSSummary()"
+      >
+        Download
+      </button>
+      <span *ngIf="selectedChannel.length < 1" class="channel-message"
+        ><small>(channel selection is mandatory)</small></span
+      >
+    </section>
+  </mat-card-content>
 </mat-card>
 <!-- /shop summary -->
 
 <!-- msl dashboard  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/msl_dashboard'">
-
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}}
-            <!-- <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/msl_dashboard'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <!-- <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
             <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small> -->
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        </mat-card-title>
-        <section class="example-section">
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+        (ngModelChange)="regionChange()"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="areas.length > 0" class="example-margin mr-10-IMP">
+        <mat-select placeholder="Areas" name="areas" [(ngModel)]="selectedArea">
+          <mat-option [value]="area" *ngFor="let area of areas">{{
+            area.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select placeholder="City" name="city" [(ngModel)]="selectedCity">
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP" (ngModelChange)="regionChange()">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion">
-
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="areas.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Areas" name='areas' [(ngModel)]="selectedArea">
-                    <mat-option [value]="area" *ngFor="let area of areas">{{area.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="Category" name='category' [(ngModel)]="selectedCategory" (ngModelChange)="categoryChange()">
                     <mat-option [value]="category" *ngFor="let category of categoryList">{{category.title}}</mat-option>
                 </mat-select>
@@ -478,32 +841,48 @@
                     <mat-option [value]="product" *ngFor="let product of productsList">{{product.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
+    </section>
 
+    <section class="example-section">
+      <mat-form-field
+        *ngIf="channels.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <!-- {{selectedChannel |json }} -->
+        <mat-select
+          placeholder="Channel"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+          multiple
+          #channelSelect="ngModel"
+          [compareWith]="equals"
+        >
+          <mat-option disabled="disabled" class="filter-option">
+            <button
+              mat-raised-button
+              class="mat-primary fill text-sm"
+              (click)="selectAll(channelSelect, channels)"
+            >
+              Select All
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="ml-1 mat-accent fill text-sm"
+              (click)="deselectAll(channelSelect)"
+            >
+              Deselect All
+            </button>
+          </mat-option>
 
-
-
-
-
-        </section>
-
-        <section class="example-section">
-            <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
-                <!-- {{selectedChannel |json }} -->
-                <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
-                    <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
-                        Select All
-                      </button>
-                        <button mat-raised-button color="warn" class="ml-1 mat-accent fill text-sm" (click)="deselectAll(channelSelect)">
-                        Deselect All
-                      </button>
-                    </mat-option>
-
-                    <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </section>
-        <section class="example-section">
-            <!-- <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
+          <mat-option [value]="channel" *ngFor="let channel of channels">{{
+            channel.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <!-- <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
                 <mat-select placeholder="Last Visit" name='lastVisit' [(ngModel)]="selectedLastVisit">
                     <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{lv}}</mat-option>
                 </mat-select>
@@ -514,66 +893,118 @@
                 </mat-select>
             </mat-form-field> -->
 
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-
-        </section>
-
-        <section class="example-section">
-            <button *ngIf="router.url==='/dashboard/msl_dashboard'" mat-raised-button color="warn" (click)="getMSLReport()">Download</button>
-
-        </section>
-
-    </mat-card-content>
+    <section class="example-section">
+      <button
+        *ngIf="router.url === '/dashboard/msl_dashboard'"
+        mat-raised-button
+        color="warn"
+        (click)="getMSLReport()"
+      >
+        Download
+      </button>
+    </section>
+  </mat-card-content>
 </mat-card>
 <!-- /msl dashboard -->
 
-
 <!-- productivity dashboard  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/productivity_dashboard'">
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/productivity_dashboard'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="areas.length > 0" class="example-margin mr-10-IMP">
+        <mat-select placeholder="ASM" name="areas" [(ngModel)]="selectedArea">
+          <mat-option [value]="area" *ngFor="let area of areas">{{
+            area.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select placeholder="City" name="city" [(ngModel)]="selectedCity">
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        </mat-card-title>
-        <section class="example-section">
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="areas.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="ASM" name='areas' [(ngModel)]="selectedArea">
-                    <mat-option [value]="area" *ngFor="let area of areas">{{area.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="categoryList.length>0" class="example-margin mr-10-IMP">
                 <mat-select placeholder="Category" name='category' [(ngModel)]="selectedCategory" (ngModelChange)="categoryChange()">
                     <mat-option [value]="category" *ngFor="let category of categoryList">{{category.title}}</mat-option>
                 </mat-select>
@@ -584,32 +1015,48 @@
                     <mat-option [value]="product" *ngFor="let product of productsList">{{product.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
+    </section>
 
+    <section class="example-section">
+      <mat-form-field
+        *ngIf="channels.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <!-- {{selectedChannel |json }} -->
+        <mat-select
+          placeholder="Channel"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+          multiple
+          #channelSelect="ngModel"
+          [compareWith]="equals"
+        >
+          <mat-option disabled="disabled" class="filter-option">
+            <button
+              mat-raised-button
+              class="mat-primary fill text-sm"
+              (click)="selectAll(channelSelect, channels)"
+            >
+              Select All
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="ml-1 mat-accent fill text-sm"
+              (click)="deselectAll(channelSelect)"
+            >
+              Deselect All
+            </button>
+          </mat-option>
 
-
-
-
-
-        </section>
-
-        <section class="example-section">
-            <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
-                <!-- {{selectedChannel |json }} -->
-                <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
-                    <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
-                        Select All
-                      </button>
-                        <button mat-raised-button color="warn" class="ml-1 mat-accent fill text-sm" (click)="deselectAll(channelSelect)">
-                        Deselect All
-                      </button>
-                    </mat-option>
-
-                    <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </section>
-        <section class="example-section">
-            <!-- <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
+          <mat-option [value]="channel" *ngFor="let channel of channels">{{
+            channel.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <!-- <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
                 <mat-select placeholder="Last Visit" name='lastVisit' [(ngModel)]="selectedLastVisit">
                     <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{lv}}</mat-option>
                 </mat-select>
@@ -620,80 +1067,144 @@
                 </mat-select>
             </mat-form-field> -->
 
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-
-        </section>
-
-        <section class="example-section">
-            <button *ngIf="router.url==='/dashboard/productivity_dashboard'" mat-raised-button color="warn" (click)="getProuctivityDashboardReport()">Download</button>
-
-        </section>
-
-    </mat-card-content>
+    <section class="example-section">
+      <button
+        *ngIf="router.url === '/dashboard/productivity_dashboard'"
+        mat-raised-button
+        color="warn"
+        (click)="getProuctivityDashboardReport()"
+      >
+        Download
+      </button>
+    </section>
+  </mat-card-content>
 </mat-card>
 <!-- /productivity dashboard -->
 
-
 <!-- oss details  -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/oos_details_report'">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/oos_details_report'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="channels.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Channel"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+          multiple
+          #channelSelect="ngModel"
+          [compareWith]="equals"
+        >
+          <mat-option disabled="disabled" class="filter-option">
+            <button
+              mat-raised-button
+              class="mat-primary fill text-sm"
+              (click)="selectAll(channelSelect, channels)"
+            >
+              Select All
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              class="ml-1 mat-accent fill text-sm"
+              (click)="deselectAll(channelSelect)"
+            >
+              Deselect All
+            </button>
+          </mat-option>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-        </mat-card-title>
-        <section class="example-section">
+          <mat-option [value]="channel" *ngFor="let channel of channels">{{
+            channel.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
-                    <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
-                                Select All
-                              </button>
-                        <button mat-raised-button color="warn" class="ml-1 mat-accent fill text-sm" (click)="deselectAll(channelSelect)">
-                                Deselect All
-                              </button>
-                    </mat-option>
-
-                    <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="areas.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Areas" name='areas' [(ngModel)]="selectedArea">
-                    <mat-option [value]="areas" *ngFor="let area of areas">{{area.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-
-
-        </section>
-        <!-- <section class="example-section">
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="areas.length > 0" class="example-margin mr-10-IMP">
+        <mat-select placeholder="Areas" name="areas" [(ngModel)]="selectedArea">
+          <mat-option [value]="areas" *ngFor="let area of areas">{{
+            area.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select placeholder="City" name="city" [(ngModel)]="selectedCity">
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <!-- <section class="example-section">
             <mat-form-field *ngIf="lastVisit.length>0" class="example-margin mr-5-IMP">
                 <mat-select placeholder="Last Visit" name='lastVisit' [(ngModel)]="selectedLastVisit">
                     <mat-option [value]="lv" *ngFor="let lv of lastVisit">{{lv}}</mat-option>
@@ -705,113 +1216,192 @@
                 </mat-select>
             </mat-form-field>
         </section> -->
-        <section class="example-section">
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+    <section class="example-section">
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <button mat-raised-button color="warn" (click)="getOOSDetailReport()">Download</button>
-
-        </section>
-    </mat-card-content>
+    <section class="example-section">
+      <button mat-raised-button color="warn" (click)="getOOSDetailReport()">
+        Download
+      </button>
+    </section>
+  </mat-card-content>
 </mat-card>
 <!-- /oss details -->
 <!-- daily visit report -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/daily_visit_report'">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/daily_visit_report'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <ng-container *ngFor="let zone of zones">
+            <mat-option *ngIf="zone.id !== -1" [value]="zone">{{
+              zone.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
-
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <ng-container *ngFor="let zone of zones">
-                        <mat-option *ngIf="zone.id!==-1" [value]="zone">{{zone.title}}</mat-option>
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-                    <ng-container *ngFor="let region of regions">
-                        <mat-option *ngIf="region.id!==-1" [value]="region">{{region.title}}</mat-option>
-
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" (ngModelChange)="getMerchandiserList($event)" [(ngModel)]="startDate" placeholder="Choose date to get merchandisers" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-
-            </mat-form-field>
-            <mat-form-field *ngIf="merchandiserList.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Merchandiser List" name='merchandiserList' [(ngModel)]="selectedMerchandiser">
-                    <mat-option [value]="ml" *ngFor="let ml of merchandiserList">{{ml.fullName}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-
-
-        </section>
-        <section class="example-section">
-            <button [disabled]="loadingReportMessage" *ngIf="selectedZone.id&& selectedRegion.id && selectedMerchandiser.fullName " mat-raised-button color="warn" (click)="downloadDailyReport()">Download</button>
-
-
-        </section>
-
-    </mat-card-content>
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <ng-container *ngFor="let region of regions">
+            <mat-option *ngIf="region.id !== -1" [value]="region">{{
+              region.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          (ngModelChange)="getMerchandiserList($event)"
+          [(ngModel)]="startDate"
+          placeholder="Choose date to get merchandisers"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="merchandiserList.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Merchandiser List"
+          name="merchandiserList"
+          [(ngModel)]="selectedMerchandiser"
+        >
+          <mat-option [value]="ml" *ngFor="let ml of merchandiserList">{{
+            ml.fullName
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <section class="example-section">
+      <button
+        [disabled]="loadingReportMessage"
+        *ngIf="
+          selectedZone.id && selectedRegion.id && selectedMerchandiser.fullName
+        "
+        mat-raised-button
+        color="warn"
+        (click)="downloadDailyReport()"
+      >
+        Download
+      </button>
+    </section>
+  </mat-card-content>
 </mat-card>
 
 <!-- / daily visit report -->
 <!-- tposmDeloyment tracker -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/tposm_deployment_report'">
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/tposm_deployment_report'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <ng-container *ngFor="let zone of zones">
+            <mat-option [value]="zone">{{ zone.title }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+        >
+          <ng-container *ngFor="let region of regions">
+            <mat-option *ngIf="region.id !== -1" [value]="region">{{
+              region.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <ng-container *ngFor="let zone of zones">
-                        <mat-option [value]="zone">{{zone.title}}</mat-option>
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion">
-                    <ng-container *ngFor="let region of regions">
-                        <mat-option *ngIf="region.id!==-1" [value]="region">{{region.title}}</mat-option>
-
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
 
                 <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
                     <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
@@ -825,272 +1415,448 @@
                     <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <!-- [disabled]="selectedChannel.length<1" -->
-            <button mat-raised-button color="warn" (click)="tposmDeploymentReport()">Download</button>
-            <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <!-- [disabled]="selectedChannel.length<1" -->
+      <button mat-raised-button color="warn" (click)="tposmDeploymentReport()">
+        Download
+      </button>
+      <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
+    </section>
+  </mat-card-content>
 </mat-card>
 
 <!-- / tposmDeloyment tracker -->
 
 <!-- raw data -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/raw_data'">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/raw_data'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Query Type"
+          name="queryList"
+          [(ngModel)]="selectedQuery"
+        >
+          <ng-container *ngFor="let query of queryList">
+            <mat-option [value]="query">{{ query.title }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Query Type" name='queryList' [(ngModel)]="selectedQuery">
-                    <ng-container *ngFor="let query of queryList">
-                        <mat-option [value]="query">{{query.title}}</mat-option>
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-
-
-
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-
-        </section>
-
-        <section class="example-section">
-            <!-- [disabled]="selectedChannel.length<1" -->
-            <button [disabled]="!selectedQuery.id" mat-raised-button color="warn" (click)="getDashboardData()">Download</button>
-            <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <!-- [disabled]="selectedChannel.length<1" -->
+      <button
+        [disabled]="!selectedQuery.id"
+        mat-raised-button
+        color="warn"
+        (click)="getDashboardData()"
+      >
+        Download
+      </button>
+      <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
+    </section>
+  </mat-card-content>
 </mat-card>
 
 <!-- / raw data -->
 
-
-
 <!-- merchandiser productivity -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/productivity_report'">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/productivity_report'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        </mat-card-title>
+      <mat-form-field
+        *ngIf="regions.length > 0 && selectedZone.id !== -1"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="City"
+          name="city"
+          [(ngModel)]="selectedCity"
+          (ngModelChange)="getTabsData()"
+        >
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="distributionList.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Distribution List"
+          name="distributionList"
+          [(ngModel)]="selectedDistribution"
+          (ngModelChange)="getTabsData()"
+        >
+          <mat-option [value]="dist" *ngFor="let dist of distributionList">{{
+            dist.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <section class="example-section">
+      <mat-form-field
+        *ngIf="storeType.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Store Type"
+          name="storeType"
+          [(ngModel)]="selectedStoreType"
+          (ngModelChange)="getTabsData()"
+        >
+          <mat-option [value]="store" *ngFor="let store of storeType">{{
+            store
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          (ngModelChange)="getTabsData($event, 'start')"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          (ngModelChange)="getTabsData($event, 'end')"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-            <mat-form-field class="example-margin mr-10-IMP">
-
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0 && selectedZone.id !==-1" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity" (ngModelChange)="getTabsData()">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="distributionList.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Distribution List" name='distributionList' [(ngModel)]="selectedDistribution" (ngModelChange)="getTabsData()">
-                    <mat-option [value]="dist" *ngFor="let dist of distributionList">{{dist.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="storeType.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Store Type" name='storeType' [(ngModel)]="selectedStoreType" (ngModelChange)="getTabsData()">
-                    <mat-option [value]="store" *ngFor="let store of storeType">{{store}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" (ngModelChange)="getTabsData($event,'start')" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" (ngModelChange)="getTabsData($event,'end')" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-        </section>
-
-        <section class="example-section">
-            <button mat-raised-button color="warn" (click)="MProductivityReport()">Download</button>
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <button mat-raised-button color="warn" (click)="MProductivityReport()">
+        Download
+      </button>
+    </section>
+  </mat-card-content>
 </mat-card>
 
-<div *ngIf="!loading && router.url==='/dashboard/productivity_report'" class="mb-20 animated  slideInLeft" fxLayout="row" fxLayout.lt-md="column" fxFlex fxLayoutGap="10px">
+<div
+  *ngIf="!loading && router.url === '/dashboard/productivity_report'"
+  class="mb-20 animated slideInLeft"
+  fxLayout="row"
+  fxLayout.lt-md="column"
+  fxFlex
+  fxLayoutGap="10px"
+>
+  <div class="row web-view">
+    <!-- <p>web view</p> -->
+    <div class="col-md-12">
+      <mat-card>
+        <mat-card-header style="justify-content: flex-end"> </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-2">
+              <div>
+                <app-stat
+                  [bgClass]="'info'"
+                  [icon]="'assignment'"
+                  [count]="tabsData?.planned"
+                  [label]="'Planned'"
+                >
+                </app-stat>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div>
+                <app-stat
+                  [bgClass]="'pink'"
+                  [icon]="'assignment'"
+                  [count]="tabsData?.oorTotal"
+                  [label]="'Out Of Route'"
+                >
+                </app-stat>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div>
+                <app-stat
+                  [bgClass]="'warn'"
+                  [icon]="'check_circle'"
+                  [count]="tabsData?.completed"
+                  [label]="'Productive'"
+                >
+                </app-stat>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div>
+                <app-stat
+                  [bgClass]="'success'"
+                  [icon]="'thumb_up'"
+                  [count]="tabsData?.successful"
+                  [label]="'Successful'"
+                ></app-stat>
+              </div>
+            </div>
 
-    <div class="row web-view">
-        <!-- <p>web view</p> -->
-        <div class="col-md-12">
-            <mat-card>
-                <mat-card-header style="justify-content: flex-end;">
+            <div class="col-md-2">
+              <div>
+                <app-stat
+                  [bgClass]="'danger'"
+                  [icon]="'contact_support'"
+                  [count]="tabsData?.unvisited"
+                  [label]="'Unvisited'"
+                >
+                </app-stat>
+              </div>
+            </div>
 
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div>
-                                <app-stat [bgClass]="'info'" [icon]="'assignment'" [count]="tabsData?.planned" [label]="'Planned'">
-                                </app-stat>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div>
-                                <app-stat [bgClass]="'pink'" [icon]="'assignment'" [count]="tabsData?.oorTotal" [label]="'Out Of Route'">
-                                </app-stat>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div>
-                                <app-stat [bgClass]="'warn'" [icon]="'check_circle'" [count]="tabsData?.completed" [label]="'Productive'">
-                                </app-stat>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div>
-                                <app-stat [bgClass]="'success'" [icon]="'thumb_up'" [count]="tabsData?.successful" [label]="'Successful'"></app-stat>
-                            </div>
-                        </div>
-                        
-
-                        <div class="col-md-2">
-                            <div>
-                                <app-stat [bgClass]="'danger'" [icon]="'contact_support'" [count]="tabsData?.unvisited" [label]="'Unvisited'">
-                                </app-stat>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div>
-                                <app-stat [bgClass]="'purple'" [icon]="'check_circle'" [count]="tabsData?.completedPercent" [label]="'Productivity %'"></app-stat>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-
-                            <div>
-                                <app-stat [bgClass]="'primary'" [icon]="'thumb_up'" [count]="tabsData?.successfulPercent" [label]="'Successful %'"></app-stat>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </mat-card-content>
-            </mat-card>
-        </div>
+            <div class="col-md-2">
+              <div>
+                <app-stat
+                  [bgClass]="'purple'"
+                  [icon]="'check_circle'"
+                  [count]="tabsData?.completedPercent"
+                  [label]="'Productivity %'"
+                ></app-stat>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div>
+                <app-stat
+                  [bgClass]="'primary'"
+                  [icon]="'thumb_up'"
+                  [count]="tabsData?.successfulPercent"
+                  [label]="'Successful %'"
+                ></app-stat>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
-    <div class="row mobile-view">
-        <!-- <p>mobile view</p> -->
+  </div>
+  <div class="row mobile-view">
+    <!-- <p>mobile view</p> -->
 
-        <div class="col-12">
-            <mat-card>
-                <mat-card-header style="justify-content: flex-end;">
+    <div class="col-12">
+      <mat-card>
+        <mat-card-header style="justify-content: flex-end"> </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-6 mobile-view-info-tabs">
+              <div>
+                <app-stat
+                  [bgClass]="'info'"
+                  [icon]="'assignment'"
+                  [count]="tabsData?.planned"
+                  [label]="'Planned'"
+                >
+                </app-stat>
+              </div>
+            </div>
+            <div class="col-6 mobile-view-info-tabs">
+              <div>
+                <app-stat
+                  [bgClass]="'warn'"
+                  [icon]="'check_circle'"
+                  [count]="tabsData?.completed"
+                  [label]="'Productive'"
+                >
+                </app-stat>
+              </div>
+            </div>
+            <div class="col-6 mobile-view-info-tabs">
+              <div>
+                <app-stat
+                  [bgClass]="'success'"
+                  [icon]="'thumb_up'"
+                  [count]="tabsData?.successful"
+                  [label]="'Successful'"
+                ></app-stat>
+              </div>
+            </div>
+            <div class="col-6 mobile-view-info-tabs">
+              <div>
+                <app-stat
+                  [bgClass]="'danger'"
+                  [icon]="'thumb_down'"
+                  [count]="tabsData?.unsuccessful"
+                  [label]="'Un-Successful'"
+                ></app-stat>
+              </div>
+            </div>
 
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="row">
-                        <div class="col-6 mobile-view-info-tabs">
-                            <div>
-                                <app-stat [bgClass]="'info'" [icon]="'assignment'" [count]="tabsData?.planned" [label]="'Planned'">
-                                </app-stat>
-                            </div>
-                        </div>
-                        <div class="col-6 mobile-view-info-tabs">
-                            <div>
-                                <app-stat [bgClass]="'warn'" [icon]="'check_circle'" [count]="tabsData?.completed" [label]="'Productive'">
-                                </app-stat>
-                            </div>
-                        </div>
-                        <div class="col-6 mobile-view-info-tabs">
-                            <div>
-                                <app-stat [bgClass]="'success'" [icon]="'thumb_up'" [count]="tabsData?.successful" [label]="'Successful'"></app-stat>
-                            </div>
-                        </div>
-                        <div class="col-6 mobile-view-info-tabs">
+            <div class="col-6 mobile-view-info-tabs">
+              <div>
+                <app-stat
+                  [bgClass]="'danger'"
+                  [icon]="'contact_support'"
+                  [count]="tabsData?.unvisited"
+                  [label]="'Unvisited'"
+                >
+                </app-stat>
+              </div>
+            </div>
 
-                            <div>
-                                <app-stat [bgClass]="'danger'" [icon]="'thumb_down'" [count]="tabsData?.unsuccessful" [label]="'Un-Successful'"></app-stat>
-                            </div>
-                        </div>
+            <div class="col-6 mobile-view-info-tabs">
+              <div>
+                <app-stat
+                  [bgClass]="'purple'"
+                  [icon]="'check_circle'"
+                  [count]="tabsData?.completedPercent"
+                  [label]="'Productivity %'"
+                ></app-stat>
+              </div>
+            </div>
 
-                        <div class="col-6 mobile-view-info-tabs">
-                            <div>
-                                <app-stat [bgClass]="'danger'" [icon]="'contact_support'" [count]="tabsData?.unvisited" [label]="'Unvisited'">
-                                </app-stat>
-                            </div>
-                        </div>
-
-                        <div class="col-6 mobile-view-info-tabs">
-                            <div>
-                                <app-stat [bgClass]="'purple'" [icon]="'check_circle'" [count]="tabsData?.completedPercent" [label]="'Productivity %'"></app-stat>
-                            </div>
-                        </div>
-
-                        <div class="col-6 mobile-view-info-tabs">
-
-                            <div>
-                                <app-stat [bgClass]="'primary'" [icon]="'thumb_up'" [count]="tabsData?.successfulPercent" [label]="'Successful %'"></app-stat>
-                            </div>
-                        </div>
-
-
-
-
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+            <div class="col-6 mobile-view-info-tabs">
+              <div>
+                <app-stat
+                  [bgClass]="'primary'"
+                  [icon]="'thumb_up'"
+                  [count]="tabsData?.successfulPercent"
+                  [label]="'Successful %'"
+                ></app-stat>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
-
+  </div>
 </div>
 
 <!-- <div *ngIf="loading && router.url==='/dashboard/productivity_report'" class="mb-20" flFlex flexLayout="row" flexLayout.lt-md="column">
@@ -1099,461 +1865,615 @@
     </div>
 </div> -->
 
-
 <!-- <mat-form-field class="mat-form-field1" *ngIf="router.url==='/dashboard/productivity_report'">
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 </mat-form-field> -->
 
 <!-- <app-mat-table [tableData]="tableData"></app-mat-table> -->
 
-<ng-container *ngIf="tableData.length>0 && router.url==='/dashboard/productivity_report'" #webView>
-    <mat-card class="isWebView">
-        <mat-card-content>
+<ng-container
+  *ngIf="
+    tableData.length > 0 && router.url === '/dashboard/productivity_report'
+  "
+  #webView
+>
+  <mat-card class="isWebView">
+    <mat-card-content>
+      <table class="table animated slideInLeft">
+        <thead>
+          <tr>
+            <th scope="col" (click)="sortIt('merchandiser_code')">
+              Merchandiser Code
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("merchandiser_code") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('merchandiser_name')">
+              Merchandiser Name
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("merchandiser_name") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('planned')">
+              Planned
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("planned") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('planned')">
+              Out Of Route
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("oor") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('completed')">
+              Productive
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("completed") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('successfull')">
+              Successful
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("successfull") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('unsuccessful')">
+              Un-Successful
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("unsuccessful") }}
+              </i>
+            </th>
+            <th
+              scope="col"
+              (click)="sortIt('unvisited')"
+              style="background: #f12e2b; color: white"
+            >
+              Unvisited
+              <br />
+              <i class="material-icons arrow" style="color: white !important">
+                {{ getArrowType("unvisited") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('completed_percent')">
+              Productivity <strong>%</strong>
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("completed_percent") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('successful_percent')">
+              Successful <strong>%</strong>
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("successful_percent") }}
+              </i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container
+            *ngFor="let item of tableData | orderBy: sortBy:sortOrder"
+          >
+            <tr>
+              <td scope="row">{{ item.merchandiser_code }}</td>
+              <td>
+                {{ item.merchandiser_name }}
+              </td>
 
-            <table class="table animated slideInLeft">
-                <thead>
-                    <tr>
+              <td>{{ item.planned }}</td>
+              <td>{{ item.oor }}</td>
+              <td class="a-link" *ngIf="item.completed != 0" title="Completed">
+                <a
+                  class="a-link"
+                  target="_blank"
+                  title="view shop details"
+                  [routerLink]="['/dashboard/shop_detail', item.id]"
+                  [queryParams]="{ id: item.id, remark_id: -1 }"
+                  queryParamsHandling="merge"
+                  >{{ item.completed }}</a
+                >
+              </td>
+              <td *ngIf="item.completed == 0">
+                {{ item.completed }}
+              </td>
+              <td
+                class="a-link"
+                *ngIf="item.successfull != 0"
+                title="Successful"
+              >
+                <a
+                  class="a-link"
+                  target="_blank"
+                  title="view shop details"
+                  [routerLink]="['/dashboard/shop_detail', item.id]"
+                  [queryParams]="{ id: item.id, remark_id: 1 }"
+                  queryParamsHandling="merge"
+                >
+                  {{ item.successfull }}</a
+                >
+              </td>
+              <td *ngIf="item.successfull == 0">
+                {{ item.successfull }}
+              </td>
 
-                        <th scope="col" (click)="sortIt('merchandiser_code')">Merchandiser Code
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('merchandiser_code')}}
-                                        </i>
+              <td
+                class="a-link"
+                *ngIf="item.unsuccessful != 0"
+                title="Un-Successful"
+              >
+                <a
+                  class="a-link"
+                  target="_blank"
+                  title="view shop details"
+                  [routerLink]="['/dashboard/shop_detail', item.id]"
+                  [queryParams]="{ id: item.id, remark_id: 0 }"
+                  queryParamsHandling="merge"
+                >
+                  {{ item.unsuccessful }}</a
+                >
+              </td>
+              <td *ngIf="item.unsuccessful == 0">
+                {{ item.unsuccessful }}
+              </td>
 
-                        </th>
-                        <th scope="col" (click)="sortIt('merchandiser_name')">Merchandiser Name
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('merchandiser_name')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('planned')">Planned
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('planned')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('planned')">Out Of Route
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('oor')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('completed')">Productive
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('completed')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('successfull')">Successful
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('successfull')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('unsuccessful')">Un-Successful
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('unsuccessful')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('unvisited')" style="background:#F12E2B;color: white">Unvisited
-                            <br>
-                            <i class="material-icons arrow" style="color:white !important">
-                                        {{getArrowType('unvisited')}}
-                                        </i></th>
-                        <th scope="col" (click)="sortIt('completed_percent')">Productivity <strong>%</strong>
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('completed_percent')}}
-                                        </i></th>
-                        <th scope="col" (click)="sortIt('successful_percent')">Successful <strong>%</strong>
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('successful_percent')}}
-                                        </i></th>
-
-
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let item of tableData | orderBy: sortBy : sortOrder">
-                        <tr>
-                            <td scope="row">{{item.merchandiser_code}}</td>
-                            <td>
-                                {{item.merchandiser_name}}
-                            </td>
-
-                            <td>{{item.planned}}</td>
-                            <td>{{item.oor}}</td>
-                            <td class="a-link" *ngIf="item.completed!=0" title="Completed">
-                                <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':-1}" queryParamsHandling="merge">{{item.completed}}</a>
-
-                            </td>
-                            <td *ngIf="item.completed==0">
-                                {{item.completed}}
-
-                            </td>
-                            <td class="a-link" *ngIf="item.successfull!=0" title="Successful">
-                                <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':1}" queryParamsHandling="merge"> {{item.successfull}}</a>
-
-                            </td>
-                            <td *ngIf="item.successfull==0">
-                                {{item.successfull}}
-
-                            </td>
-
-                            <td class="a-link" *ngIf="item.unsuccessful!=0" title="Un-Successful">
-                                <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':0}" queryParamsHandling="merge"> {{item.unsuccessful}}</a>
-
-                            </td>
-                            <td *ngIf="item.unsuccessful==0">
-                                {{item.unsuccessful}}
-
-                            </td>
-
-
-
-                            <td>{{item.unvisited}}</td>
-                            <td>{{getPercentage(item.completed_percent)}}</td>
-                            <td>{{getPercentage(item.successful_percent)}}</td>
-
-                        </tr>
-                    </ng-container>
-
-
-
-                </tbody>
-
-
-            </table>
-
-        </mat-card-content>
-    </mat-card>
+              <td>{{ item.unvisited }}</td>
+              <td>{{ getPercentage(item.completed_percent) }}</td>
+              <td>{{ getPercentage(item.successful_percent) }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
 </ng-container>
-<ng-container *ngIf="tableData.length>0 && router.url==='/dashboard/productivity_report'" #mobileView>
+<ng-container
+  *ngIf="
+    tableData.length > 0 && router.url === '/dashboard/productivity_report'
+  "
+  #mobileView
+>
+  <div class="row isMobileView">
+    <table class="table animated slideInLeft">
+      <thead>
+        <tr>
+          <th scope="col" (click)="sortIt('merchandiser_code')">
+            Merchandiser Code
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("merchandiser_code") }}
+            </i>
+          </th>
+          <th scope="col" (click)="sortIt('merchandiser_name')">
+            Merchandiser Name
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("merchandiser_name") }}
+            </i>
+          </th>
+          <th scope="col" (click)="sortIt('planned')">
+            Planned
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("planned") }}
+            </i>
+          </th>
+          <th scope="col" (click)="sortIt('completed')">
+            Productive
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("completed") }}
+            </i>
+          </th>
+          <th scope="col" (click)="sortIt('successfull')">
+            Successful
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("successfull") }}
+            </i>
+          </th>
+          <th scope="col" (click)="sortIt('unsuccessful')">
+            Un-Successful
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("unsuccessful") }}
+            </i>
+          </th>
+          <th
+            scope="col"
+            (click)="sortIt('unvisited')"
+            style="background: #f12e2b; color: white"
+          >
+            Unvisited
+            <br />
+            <i class="material-icons arrow" style="color: white !important">
+              {{ getArrowType("unvisited") }}
+            </i>
+          </th>
+          <th scope="col" (click)="sortIt('completed_percent')">
+            Productivity <strong>%</strong>
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("completed_percent") }}
+            </i>
+          </th>
+          <th scope="col" (click)="sortIt('successful_percent')">
+            Successful <strong>%</strong>
+            <br />
+            <i class="material-icons arrow">
+              {{ getArrowType("successful_percent") }}
+            </i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let item of tableData | orderBy: sortBy:sortOrder"
+        >
+          <tr>
+            <td scope="row">{{ item.merchandiser_code }}</td>
+            <td>
+              {{ item.merchandiser_name }}
+            </td>
 
-    <div class="row isMobileView">
-        <table class="table animated slideInLeft">
-            <thead>
-                <tr>
+            <td>{{ item.planned }}</td>
+            <td class="a-link" *ngIf="item.completed != 0" title="Completed">
+              <a
+                class="a-link"
+                target="_blank"
+                title="view shop details"
+                [routerLink]="['/dashboard/shop_detail', item.id]"
+                [queryParams]="{ id: item.id, remark_id: -1 }"
+                queryParamsHandling="merge"
+                >{{ item.completed }}</a
+              >
+            </td>
+            <td *ngIf="item.completed == 0">
+              {{ item.completed }}
+            </td>
+            <td class="a-link" *ngIf="item.successfull != 0" title="Successful">
+              <a
+                class="a-link"
+                target="_blank"
+                title="view shop details"
+                [routerLink]="['/dashboard/shop_detail', item.id]"
+                [queryParams]="{ id: item.id, remark_id: 1 }"
+                queryParamsHandling="merge"
+              >
+                {{ item.successfull }}</a
+              >
+            </td>
+            <td *ngIf="item.successfull == 0">
+              {{ item.successfull }}
+            </td>
 
-                    <th scope="col" (click)="sortIt('merchandiser_code')">Merchandiser Code
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('merchandiser_code')}}
-                                                </i>
+            <td
+              class="a-link"
+              *ngIf="item.unsuccessful != 0"
+              title="Un-Successful"
+            >
+              <a
+                class="a-link"
+                target="_blank"
+                title="view shop details"
+                [routerLink]="['/dashboard/shop_detail', item.id]"
+                [queryParams]="{ id: item.id, remark_id: 0 }"
+                queryParamsHandling="merge"
+              >
+                {{ item.unsuccessful }}</a
+              >
+            </td>
+            <td *ngIf="item.unsuccessful == 0">
+              {{ item.unsuccessful }}
+            </td>
 
-                    </th>
-                    <th scope="col" (click)="sortIt('merchandiser_name')">Merchandiser Name
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('merchandiser_name')}}
-                                                </i>
-                    </th>
-                    <th scope="col" (click)="sortIt('planned')">Planned
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('planned')}}
-                                                </i>
-                    </th>
-                    <th scope="col" (click)="sortIt('completed')">Productive
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('completed')}}
-                                                </i>
-                    </th>
-                    <th scope="col" (click)="sortIt('successfull')">Successful
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('successfull')}}
-                                                </i>
-                    </th>
-                    <th scope="col" (click)="sortIt('unsuccessful')">Un-Successful
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('unsuccessful')}}
-                                                </i>
-                    </th>
-                    <th scope="col" (click)="sortIt('unvisited')" style="background:#F12E2B;color: white">Unvisited
-                        <br>
-                        <i class="material-icons arrow" style="color:white !important">
-                                                {{getArrowType('unvisited')}}
-                                                </i></th>
-                    <th scope="col" (click)="sortIt('completed_percent')">Productivity <strong>%</strong>
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('completed_percent')}}
-                                                </i></th>
-                    <th scope="col" (click)="sortIt('successful_percent')">Successful <strong>%</strong>
-                        <br>
-                        <i class="material-icons arrow">
-                                                {{getArrowType('successful_percent')}}
-                                                </i></th>
-
-
-
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let item of tableData | orderBy: sortBy : sortOrder">
-                    <tr>
-                        <td scope="row">{{item.merchandiser_code}}</td>
-                        <td>
-                            {{item.merchandiser_name}}
-                        </td>
-
-                        <td>{{item.planned}}</td>
-                        <td class="a-link" *ngIf="item.completed!=0" title="Completed">
-                            <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':-1}" queryParamsHandling="merge">{{item.completed}}</a>
-
-                        </td>
-                        <td *ngIf="item.completed==0">
-                            {{item.completed}}
-
-                        </td>
-                        <td class="a-link" *ngIf="item.successfull!=0" title="Successful">
-                            <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':1}" queryParamsHandling="merge"> {{item.successfull}}</a>
-
-                        </td>
-                        <td *ngIf="item.successfull==0">
-                            {{item.successfull}}
-
-                        </td>
-
-                        <td class="a-link" *ngIf="item.unsuccessful!=0" title="Un-Successful">
-                            <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':0}" queryParamsHandling="merge"> {{item.unsuccessful}}</a>
-
-                        </td>
-                        <td *ngIf="item.unsuccessful==0">
-                            {{item.unsuccessful}}
-
-                        </td>
-
-
-
-                        <td>{{item.unvisited}}</td>
-                        <td>{{getPercentage(item.completed_percent)}}</td>
-                        <td>{{getPercentage(item.successful_percent)}}</td>
-
-                    </tr>
-                </ng-container>
-
-
-
-            </tbody>
-
-
-        </table>
-    </div>
-
-
+            <td>{{ item.unvisited }}</td>
+            <td>{{ getPercentage(item.completed_percent) }}</td>
+            <td>{{ getPercentage(item.successful_percent) }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
 </ng-container>
 
-<div class="row " *ngIf="loading && router.url==='/dashboard/productivity_report'">
-    <div class="col-md-12 text-center">
-        <div class="img-center">
-            <img src="assets/images/basicloader.gif" alt="" srcset="">
-        </div>
+<div
+  class="row"
+  *ngIf="loading && router.url === '/dashboard/productivity_report'"
+>
+  <div class="col-md-12 text-center">
+    <div class="img-center">
+      <img src="assets/images/basicloader.gif" alt="" srcset="" />
     </div>
+  </div>
 </div>
-
 
 <!-- / merchandiser productivity -->
 
-
-
-
 <!--Start Supervisor Productivity -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/supervisor_productivity'">
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/supervisor_productivity'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <mat-option [value]="zone" *ngFor="let zone of zones">{{
+            zone.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        </mat-card-title>
+      <mat-form-field
+        *ngIf="regions.length > 0 && selectedZone.id !== -1"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+          (ngModelChange)="regionChange()"
+        >
+          <mat-option [value]="region" *ngFor="let region of regions">{{
+            region.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        *ngIf="cities.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="City"
+          name="city"
+          [(ngModel)]="selectedCity"
+          (ngModelChange)="getSupTabsData()"
+        >
+          <mat-option [value]="city" *ngFor="let city of cities">{{
+            city.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-        <section class="example-section">
-
-
-            <mat-form-field class="example-margin mr-10-IMP">
-
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <mat-option [value]="zone" *ngFor="let zone of zones">{{zone.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0 && selectedZone.id !==-1" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion" (ngModelChange)="regionChange()">
-                    <mat-option [value]="region" *ngFor="let region of regions">{{region.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field *ngIf="cities.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="City" name='city' [(ngModel)]="selectedCity" (ngModelChange)="getSupTabsData()">
-                    <mat-option [value]="city" *ngFor="let city of cities">{{city.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-           
-
-
-
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" (ngModelChange)="getSupTabsData($event,'start')" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" (ngModelChange)="getSupTabsData($event,'end')" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-        </section>
-
- 
-
-
-    </mat-card-content>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          (ngModelChange)="getSupTabsData($event, 'start')"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          (ngModelChange)="getSupTabsData($event, 'end')"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
+  </mat-card-content>
 </mat-card>
 
-<ng-container *ngIf="tableData.length>0 && router.url==='/dashboard/supervisor_productivity'" #webView>
-    <mat-card class="isWebView">
-        <mat-card-content>
+<ng-container
+  *ngIf="
+    tableData.length > 0 && router.url === '/dashboard/supervisor_productivity'
+  "
+  #webView
+>
+  <mat-card class="isWebView">
+    <mat-card-content>
+      <table class="table animated slideInLeft">
+        <thead>
+          <tr>
+            <th scope="col" (click)="sortIt('merchandiser_code')">
+              Merchandiser Code
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("merchandiser_code") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('merchandiser_name')">
+              Merchandiser Name
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("merchandiser_name") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('completed')">
+              Productive
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("completed") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('successfull')">
+              Successful
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("successfull") }}
+              </i>
+            </th>
+            <th scope="col" (click)="sortIt('unsuccessful')">
+              Un-Successful
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("unsuccessful") }}
+              </i>
+            </th>
 
-            <table class="table animated slideInLeft">
-                <thead>
-                    <tr>
+            <th scope="col" (click)="sortIt('successful_percent')">
+              Successful <strong>%</strong>
+              <br />
+              <i class="material-icons arrow">
+                {{ getArrowType("successful_percent") }}
+              </i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container
+            *ngFor="let item of tableData | orderBy: sortBy:sortOrder"
+          >
+            <tr>
+              <td scope="row">{{ item.merchandiser_code }}</td>
+              <td>
+                {{ item.merchandiser_name }}
+              </td>
 
-                        <th scope="col" (click)="sortIt('merchandiser_code')">Merchandiser Code
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('merchandiser_code')}}
-                                        </i>
+              <td class="a-link" *ngIf="item.completed != 0" title="Completed">
+                <a
+                  class="a-link"
+                  target="_blank"
+                  title="view shop details"
+                  [routerLink]="['/dashboard/shop_detail', item.id]"
+                  [queryParams]="{ id: item.id, remark_id: -1 }"
+                  queryParamsHandling="merge"
+                  >{{ item.completed }}</a
+                >
+              </td>
+              <td *ngIf="item.completed == 0">
+                {{ item.completed }}
+              </td>
+              <td
+                class="a-link"
+                *ngIf="item.successfull != 0"
+                title="Successful"
+              >
+                <a
+                  class="a-link"
+                  target="_blank"
+                  title="view shop details"
+                  [routerLink]="['/dashboard/shop_detail', item.id]"
+                  [queryParams]="{ id: item.id, remark_id: 1 }"
+                  queryParamsHandling="merge"
+                >
+                  {{ item.successfull }}</a
+                >
+              </td>
+              <td *ngIf="item.successfull == 0">
+                {{ item.successfull }}
+              </td>
 
-                        </th>
-                        <th scope="col" (click)="sortIt('merchandiser_name')">Merchandiser Name
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('merchandiser_name')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('completed')">Productive
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('completed')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('successfull')">Successful
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('successfull')}}
-                                        </i>
-                        </th>
-                        <th scope="col" (click)="sortIt('unsuccessful')">Un-Successful
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('unsuccessful')}}
-                                        </i>
-                        </th>
-                       
-                       
-                        <th scope="col" (click)="sortIt('successful_percent')">Successful <strong>%</strong>
-                            <br>
-                            <i class="material-icons arrow">
-                                        {{getArrowType('successful_percent')}}
-                                        </i></th>
+              <td
+                class="a-link"
+                *ngIf="item.unsuccessful != 0"
+                title="Un-Successful"
+              >
+                <a
+                  class="a-link"
+                  target="_blank"
+                  title="view shop details"
+                  [routerLink]="['/dashboard/shop_detail', item.id]"
+                  [queryParams]="{ id: item.id, remark_id: 0 }"
+                  queryParamsHandling="merge"
+                >
+                  {{ item.unsuccessful }}</a
+                >
+              </td>
+              <td *ngIf="item.unsuccessful == 0">
+                {{ item.unsuccessful }}
+              </td>
 
-
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let item of tableData | orderBy: sortBy : sortOrder">
-                        <tr>
-                            <td scope="row">{{item.merchandiser_code}}</td>
-                            <td>
-                                {{item.merchandiser_name}}
-                            </td>
-
-                            
-                            <td class="a-link" *ngIf="item.completed!=0" title="Completed">
-                                <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':-1}" queryParamsHandling="merge">{{item.completed}}</a>
-
-                            </td>
-                            <td *ngIf="item.completed==0">
-                                {{item.completed}}
-
-                            </td>
-                            <td class="a-link" *ngIf="item.successfull!=0" title="Successful">
-                                <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':1}" queryParamsHandling="merge"> {{item.successfull}}</a>
-
-                            </td>
-                            <td *ngIf="item.successfull==0">
-                                {{item.successfull}}
-
-                            </td>
-
-                            <td class="a-link" *ngIf="item.unsuccessful!=0" title="Un-Successful">
-                                <a class="a-link" target="_blank" title="view shop details" [routerLink]="['/dashboard/shop_detail',item.id]" [queryParams]="{'id':item.id,'remark_id':0}" queryParamsHandling="merge"> {{item.unsuccessful}}</a>
-
-                            </td>
-                            <td *ngIf="item.unsuccessful==0">
-                                {{item.unsuccessful}}
-
-                            </td>
-
-                            <td>{{getPercentage(item.successful_percent)}}</td>
-
-                        </tr>
-                    </ng-container>
-
-
-
-                </tbody>
-
-
-            </table>
-
-        </mat-card-content>
-    </mat-card>
+              <td>{{ getPercentage(item.successful_percent) }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
 </ng-container>
-
 
 <!--End Supervisor Productivity-->
 
-
 <!-- Time Analysis Report -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/time-analysis-report'">
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/time-analysis-report'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <ng-container *ngFor="let zone of zones">
+            <mat-option [value]="zone">{{ zone.title }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+        >
+          <ng-container *ngFor="let region of regions">
+            <mat-option [value]="region">{{ region.title }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <ng-container *ngFor="let zone of zones">
-                        <mat-option [value]="zone">{{zone.title}}</mat-option>
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion">
-                    <ng-container *ngFor="let region of regions">
-                        <mat-option [value]="region">{{region.title}}</mat-option>
-
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
 
                 <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
                     <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
@@ -1567,74 +2487,109 @@
                     <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <!-- [disabled]="selectedChannel.length<1" -->
-            <button mat-raised-button color="warn" (click)="timeAnalysisReport()">Download</button>
-            <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <!-- [disabled]="selectedChannel.length<1" -->
+      <button mat-raised-button color="warn" (click)="timeAnalysisReport()">
+        Download
+      </button>
+      <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
+    </section>
+  </mat-card-content>
 </mat-card>
 <!-- / Time Analysis Report -->
 
-
-
-
-
-
-
-
 <!-- daily evaluation report -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/daily_evaluation_report'">
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/daily_evaluation_report'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select placeholder="Type" name="type" [(ngModel)]="selectedOption">
+          <mat-option [value]="op.value" *ngFor="let op of options">{{
+            op.title
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <ng-container *ngFor="let zone of zones">
+            <mat-option *ngIf="zone.id !== -1" [value]="zone">{{
+              zone.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Type" name='type'  [(ngModel)]="selectedOption">
-                        <mat-option [value]="op.value" *ngFor="let op of options">{{op.title}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+        >
+          <ng-container *ngFor="let region of regions">
+            <mat-option *ngIf="region.id !== -1" [value]="region">{{
+              region.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <ng-container *ngFor="let zone of zones">
-                        <mat-option *ngIf="zone.id!==-1" [value]="zone">{{zone.title}}</mat-option>
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion">
-                    <ng-container *ngFor="let region of regions">
-                        <mat-option *ngIf="region.id!==-1" [value]="region">{{region.title}}</mat-option>
-
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
 
                 <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
                     <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
@@ -1648,63 +2603,95 @@
                     <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <!-- [disabled]="selectedChannel.length<1" -->
-            <button mat-raised-button color="warn" (click)="dailyEvaluationRport()">Download</button>
-            <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <!-- [disabled]="selectedChannel.length<1" -->
+      <button mat-raised-button color="warn" (click)="dailyEvaluationRport()">
+        Download
+      </button>
+      <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
+    </section>
+  </mat-card-content>
 </mat-card>
 
 <!-- daily evaluation report -->
 
 <!-- shop list report -->
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/shop-list-report'">
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/shop-list-report'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <ng-container *ngFor="let zone of zones">
+            <mat-option [value]="zone">{{ zone.title }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+        >
+          <ng-container *ngFor="let region of regions">
+            <mat-option [value]="region">{{ region.title }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <ng-container *ngFor="let zone of zones">
-                        <mat-option [value]="zone">{{zone.title}}</mat-option>
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion">
-                    <ng-container *ngFor="let region of regions">
-                        <mat-option [value]="region">{{region.title}}</mat-option>
-
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
+      <!-- <mat-form-field *ngIf="channels.length>0" class="example-margin mr-10-IMP">
 
                 <mat-select placeholder="Channel" name='channel' [(ngModel)]="selectedChannel" multiple #channelSelect="ngModel" [compareWith]="equals">
                     <mat-option disabled="disabled" class="filter-option"> <button mat-raised-button class="mat-primary fill text-sm" (click)="selectAll(channelSelect, channels)">
@@ -1718,136 +2705,281 @@
                     <mat-option [value]="channel" *ngFor="let channel of channels">{{channel.title}}</mat-option>
                 </mat-select>
             </mat-form-field> -->
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-        </section>
-
-        <section class="example-section">
-            <!-- [disabled]="selectedChannel.length<1" -->
-            <button mat-raised-button color="warn" (click)="shopListReport()">Download</button>
-            <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <!-- [disabled]="selectedChannel.length<1" -->
+      <button mat-raised-button color="warn" (click)="shopListReport()">
+        Download
+      </button>
+      <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
+    </section>
+  </mat-card-content>
 </mat-card>
 
 <!-- shop list report -->
 
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/capturedAbnormalUnvisited'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <ng-container *ngFor="let zone of zones">
+            <mat-option *ngIf="zone.id !== -1" [value]="zone">{{
+              zone.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+        >
+          <ng-container *ngFor="let region of regions">
+            <mat-option *ngIf="region.id !== -1" [value]="region">{{
+              region.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/capturedAbnormalUnvisited'">
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
-
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <ng-container *ngFor="let zone of zones">
-                        <mat-option *ngIf="zone.id!==-1" [value]="zone">{{zone.title}}</mat-option>
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion">
-                    <ng-container *ngFor="let region of regions">
-                        <mat-option *ngIf="region.id!==-1" [value]="region">{{region.title}}</mat-option>
-
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-
-        </section>
-
-        <section class="example-section">
-            <!-- [disabled]="selectedChannel.length<1" -->
-            <button mat-raised-button color="warn" (click)="uniqueBasedReport()">Download</button>
-            <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <!-- [disabled]="selectedChannel.length<1" -->
+      <button mat-raised-button color="warn" (click)="uniqueBasedReport()">
+        Download
+      </button>
+      <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
+    </section>
+  </mat-card-content>
 </mat-card>
 
+<mat-card class="mb-20" *ngIf="router.url === '/dashboard/vo_error_report'">
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+      <small
+        style="color: lightseagreen !important"
+        class="mtb-5-IMP"
+        *ngIf="loadingReportMessage"
+        >Your file is being prepared for download</small
+      >
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Zone"
+          name="zone"
+          [(ngModel)]="selectedZone"
+          (ngModelChange)="zoneChange()"
+        >
+          <ng-container *ngFor="let zone of zones">
+            <mat-option *ngIf="zone.id !== -1" [value]="zone">{{
+              zone.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-<mat-card class="mb-20" *ngIf="router.url==='/dashboard/vo_error_report'">
+      <mat-form-field
+        *ngIf="regions.length > 0"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Region"
+          name="region"
+          [(ngModel)]="selectedRegion"
+        >
+          <ng-container *ngFor="let region of regions">
+            <mat-option *ngIf="region.id !== -1" [value]="region">{{
+              region.title
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-card-content>
-        <mat-card-title>
-            {{title| uppercase}} <i color="warn" [ngClass]="{'fa fa-cog fa-spin':loadingData}"></i>
-            <small style="color:lightseagreen !important" class="mtb-5-IMP" *ngIf="loadingReportMessage">Your file is being prepared for download</small>
-        </mat-card-title>
-        <section class="example-section">
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
+    <section class="example-section">
+      <!-- [disabled]="selectedChannel.length<1" -->
+      <button mat-raised-button color="warn" (click)="VOErrorReport()">
+        Download
+      </button>
+      <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
+    </section>
+  </mat-card-content>
+</mat-card>
 
-            <mat-form-field class="example-margin mr-10-IMP">
-                <mat-select placeholder="Zone" name='zone' [(ngModel)]="selectedZone" (ngModelChange)="zoneChange()">
-                    <ng-container *ngFor="let zone of zones">
-                        <mat-option *ngIf="zone.id!==-1" [value]="zone">{{zone.title}}</mat-option>
-                    </ng-container>
+<mat-card
+  class="mb-20"
+  *ngIf="router.url === '/dashboard/merchandiser_attendance'"
+>
+  <mat-card-content>
+    <mat-card-title>
+      {{ title | uppercase }}
+      <i color="warn" [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+    </mat-card-title>
+    <section class="example-section">
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker0"
+          [(ngModel)]="startDate"
+          placeholder="Choose a start date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker0"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker0></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-full-width mr-10-IMP">
+        <input
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker1"
+          [(ngModel)]="endDate"
+          placeholder="Choose a end date"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </section>
 
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="regions.length>0" class="example-margin mr-10-IMP">
-                <mat-select placeholder="Region" name='region' [(ngModel)]="selectedRegion">
-                    <ng-container *ngFor="let region of regions">
-                        <mat-option *ngIf="region.id!==-1" [value]="region">{{region.title}}</mat-option>
-
-                    </ng-container>
-
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker0" [(ngModel)]="startDate" placeholder="Choose a start date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                <mat-datepicker #picker0></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field class="example-full-width mr-10-IMP">
-                <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker1" [(ngModel)]="endDate" placeholder="Choose a end date" readonly>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-
-        </section>
-
-        <section class="example-section">
-            <!-- [disabled]="selectedChannel.length<1" -->
-            <button mat-raised-button color="warn" (click)="VOErrorReport()">Download</button>
-            <!-- <span *ngIf="selectedChannel.length<1" class="channel-message"><small>(channel selection is mandatory)</small></span> -->
-
-        </section>
-
-
-    </mat-card-content>
+    <section class="example-section">
+      <button mat-raised-button color="warn" (click)="getAttendanceReport()">
+        Download
+      </button>
+    </section>
+  </mat-card-content>
 </mat-card>

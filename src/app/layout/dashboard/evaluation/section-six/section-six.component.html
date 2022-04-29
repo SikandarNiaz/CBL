@@ -5,36 +5,39 @@
   </button>
 </p> -->
 
-<ng-container class="mt-2 justify-content-center" *ngIf="tableData?.length>0">
-    <div class="row justify-content-center">
-        <h3><u>{{data.sectionTitle}}</u></h3>
-
-    </div>
-    <div class="col-md-12 mt-1">
-
-        <table class="table table-bordered" style="min-width:820px !important">
-            <thead style="background:lightgray">
-                <tr>
-                    <!-- <th>total_com_height</th> -->
-                    <th>Total Com Width</th>
-                    <!-- <th>total_height</th> -->
-                    <th>Total Width</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of tableData">
-                    <!-- <td>{{item?.total_com_height}}</td> -->
-                    <td> {{item?.total_com_width}}</td>
-                    <!-- <td> {{item?.total_height}}</td> -->
-                    <td> {{item?.total_width}}</td>
-                    <td>
-                        <i style="color:blue;cursor:pointer !important" title="edit width" class="fa fa-pencil" (click)="openModal(item)"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-
+<ng-container class="mt-2 justify-content-center" *ngIf="tableData?.length > 0">
+  <div class="row justify-content-center">
+    <h3>
+      <u>{{ data.sectionTitle }}</u>
+    </h3>
+  </div>
+  <div class="col-md-12 mt-1">
+    <table class="table table-bordered" style="min-width: 820px !important">
+      <thead style="background: lightgray">
+        <tr>
+          <!-- <th>total_com_height</th> -->
+          <th>Total Com Width</th>
+          <!-- <th>total_height</th> -->
+          <th>Total CBL Width</th>
+          <th *ngIf="isEditable">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of tableData">
+          <!-- <td>{{item?.total_com_height}}</td> -->
+          <td>{{ item?.total_com_width }}</td>
+          <!-- <td> {{item?.total_height}}</td> -->
+          <td>{{ item?.total_width }}</td>
+          <td *ngIf="isEditable">
+            <i
+              style="color: blue; cursor: pointer !important"
+              title="edit width"
+              class="fa fa-pencil"
+              (click)="openModal(item)"
+            ></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </ng-container>
