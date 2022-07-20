@@ -36,6 +36,7 @@ import { MerchandiserWiseScoreComponent } from "./innerComponents/merchandiser-w
 import { MerchandiserScoreComponent } from "./innerComponents/merchandiser-score/merchandiser-score.component";
 import { SupervisorProductivityComponent } from "./innerComponents/supervisor-productivity/supervisor-productivity.component";
 import { MerchandiserPlannedCallsComponent } from "./innerComponents/merchandiser-planned-calls/merchandiser-planned-calls.component";
+import { DistributionCheckInCardComponent } from "./innerComponents/distribution-check-in-card/distribution-check-in-card.component";
 
 const routes: Routes = [
   {
@@ -111,6 +112,10 @@ const routes: Routes = [
       {
         path: "merchandiser-planned-calls",
         component: MerchandiserPlannedCallsComponent,
+      },
+      {
+        path: "distribution-check-in",
+        component: DistributionCheckInCardComponent,
       },
     ],
   },
