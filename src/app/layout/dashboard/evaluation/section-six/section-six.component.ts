@@ -17,6 +17,11 @@ export class SectionSixComponent implements OnInit {
   @Input("isEditable") isEditable: any;
   @Output("productList") productForEmit: any = new EventEmitter<any>();
   @Output("showModal") showModal: any = new EventEmitter<any>();
+  @Output("showComModal") showComModal: any = new EventEmitter<any>();
+
+  // sosCBLModal: boolean= false;
+  // sosComModal: boolean= false;
+  
   tableData: any = [];
 
   constructor() {}
@@ -25,6 +30,11 @@ export class SectionSixComponent implements OnInit {
 
   openModal(item) {
     this.showModal.emit(item);
+  }
+
+  openComModal(item){
+    this.showComModal.emit(item);
+    console.log("openComModal");
   }
 
   ngOnChanges(changes: SimpleChanges): void {

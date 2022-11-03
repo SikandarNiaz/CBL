@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('remarksModal') remarksModal: ModalDirective;
   @ViewChild('evaluationRemarksModal') evaluationRemarksModal: ModalDirective;
   @ViewChild('sosModal') sosModal: ModalDirective;
+  @ViewChild('comModal') comModal: ModalDirective;
   @ViewChild('childModalEmail') childModalEmail: ModalDirective;
 
 
@@ -81,6 +82,7 @@ export class HomeComponent implements OnInit {
   ) {
     this.surveyId;
 
+    debugger;
     this.activatedRoutes.queryParams.subscribe(q => {
       if (q.location) { this.isFromShop = false; }
     });
@@ -118,7 +120,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.availabilityCount = 0;
-    this.location.replaceState('/details/');
+    // this.location.replaceState('/details/');
     this.userType = localStorage.getItem('user_type');
     this.reevaluatorRole = localStorage.getItem('Reevaluator');
   }
@@ -167,7 +169,14 @@ export class HomeComponent implements OnInit {
            this.setRemarksForReEvaluation();
            this.checkEvaluatedRemarks();
 
-            if (this.data.criteria) { this.calculateScore(); }
+            if (this.data.criteria) { this.calculateScore(); 
+              debugger;
+          console.log(this.userType);
+          if(this.userType == 16 || this.userType== this.reevaluatorRole){
+          this.isEditable = true;
+          console.log(this.userType);
+        }
+            }
 
            } else {
           document.title = this.data.section[0].sectionTitle;
@@ -186,8 +195,11 @@ export class HomeComponent implements OnInit {
 
           localStorage.setItem('productList', JSON.stringify(this.productList));
 
+          debugger;
+          console.log(this.userType);
           if(this.userType == 16 || this.userType== this.reevaluatorRole){
           this.isEditable = true;
+          console.log(this.userType);
         }
 
           // tslint:disable-next-line:triple-equals
@@ -344,6 +356,7 @@ export class HomeComponent implements OnInit {
   }
 
   singleCheckboxChange(id) {
+    debugger;
       this.selectedEvaluationRemark = id;
     }
 
@@ -689,7 +702,7 @@ export class HomeComponent implements OnInit {
     console.log('final SoS object', obj  );
     this.httpService.updateSOS(obj).subscribe((data: any) => {
       if (data.success) {
-        this.toastr.info('SOS width is updated');
+        this.toastr.info('width is updated');
 
       }
 // alert(data)
@@ -715,8 +728,20 @@ export class HomeComponent implements OnInit {
     this.sosModal.show();
   }
 
+  
+  showComModal(item): void {
+    console.log('output item', item);
+    console.log('showComModal', item);
+    this.selectedSoS = item;
+      this.comModal.show();
+    }
+
   hideSoSModal(): void {
     this.sosModal.hide();
+  }
+
+  hideComModal(): void {
+    this.comModal.hide();
   }
 
   showRemarksModal() {

@@ -17,6 +17,7 @@
         <tr>
           <!-- <th>total_com_height</th> -->
           <th>Total Com Width</th>
+          <th *ngIf="isEditable">Action</th>
           <!-- <th>total_height</th> -->
           <th>Total CBL Width</th>
           <th *ngIf="isEditable">Action</th>
@@ -26,6 +27,14 @@
         <tr *ngFor="let item of tableData">
           <!-- <td>{{item?.total_com_height}}</td> -->
           <td>{{ item?.total_com_width }}</td>
+          <td *ngIf="isEditable">
+            <i
+              style="color: blue; cursor: pointer !important"
+              title="edit width"
+              class="fa fa-pencil"
+              (click)="openComModal(item)"
+            ></i>
+          </td>
           <!-- <td> {{item?.total_height}}</td> -->
           <td>{{ item?.total_width }}</td>
           <td *ngIf="isEditable">

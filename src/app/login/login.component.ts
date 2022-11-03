@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         );
         // tslint:disable-next-line:triple-equals
         if (
-          (res.user.typeID =
+          (res.user.typeID ==
             res.Evaluator || res.user.typeID == res.ReEvaluator)
         ) {
           this.router.navigate(["/dashboard/merchandiser_List"]);
