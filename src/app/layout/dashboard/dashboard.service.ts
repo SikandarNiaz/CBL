@@ -62,12 +62,15 @@ export class DashboardService {
   }
 
   removePlanedCall(obj) {
+    // debugger;
     obj = this.UrlEncodeMaker(obj);
+    // debugger;
     const url = this.ip + "remove-plan-call";
     return this.http.post(url, obj, this.httpOptions);
   }
 
   UrlEncodeMaker(obj) {
+    // debugger;
     let url = "";
     for (const key in obj) {
       url += `${key}=${obj[key]}&`;

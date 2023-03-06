@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewChildren } from "@angular/core";
 import { ModalDirective } from "ngx-bootstrap";
 import * as moment from "moment";
 import { Router } from "@angular/router";
@@ -14,6 +14,8 @@ import { ngxCsv } from "ngx-csv/ngx-csv";
 })
 export class MerchandiserPlannedCallsComponent implements OnInit {
   title = "Merchandiser Attendance";
+  selectedSurveyors: any = [];
+  @ViewChildren("checked") private myCheckbox: any;
 
   @ViewChild("remarksModal") remarksModal: ModalDirective;
   loadingData: boolean;
@@ -263,9 +265,87 @@ export class MerchandiserPlannedCallsComponent implements OnInit {
     this.remarksModal.show();
   }
   hideRemarksModal() {
+    this.deleteRoutes(this.selectedUser);
     this.remarksModal.hide();
-    if (this.selectedUser !== 0) {
-      this.removePlanedCall(this.selectedUser);
+    // this.remarksModal.hide();
+    // if (this.selectedUser !== 0) {
+    //   this.removePlanedCall(this.selectedUser);
+    // }
+  }
+
+  
+
+  deleteRoutes(item) {
+    console.log("calls", this.selectedRemark);
+    const isSelected = Object.keys(this.selectedRemark).length;
+    const key = Object.keys(this.selectedRemark)[0];
+    const value = this.selectedRemark[key];
+    if (isSelected > 0) {
+      this.loadingData = true;
+      const obj = {
+        userId: JSON.parse(localStorage.getItem("user_id")),
+        startDate: moment(this.startDate).format("YYYY-MM-DD"),
+        remarkId: value,
+        surveyorId: item || this.selectedSurveyors,
+      };
+      this.httpService.removePlanedCall(obj).subscribe(
+        (data) => {
+          if (data) {
+            this.toastr.success("Planned Calls Deactivated Successfully ");
+            this.selectedUser = 0;
+            // this.showCount("show");
+          }
+          this.clearLoading();
+        },
+        (error) => {
+          error.status === 0
+            ? this.toastr.error("Please check Internet Connection", "Error")
+            : this.toastr.error(error.description, "Error");
+          this.clearLoading();
+        }
+      );
     }
   }
+
+  clearLoading() {
+    this.loadingData = false;
+  }
+
+  checkUncheckSingle(event, item, index) {
+    if (event.checked === true) {
+      this.selectedSurveyors.push(item.id);
+      console.log("surveyos", this.selectedSurveyors);
+    } else {
+      const i = this.selectedSurveyors.indexOf(item.id);
+      this.selectedSurveyors.splice(i, 1);
+      console.log(this.selectedSurveyors);
+    }
+  }
+
+  checkUncheckAll(event) {
+    if (event.checked === true) {
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.selectedSurveyors.indexOf(this.tableData[i].id) == -1) {
+          this.selectedSurveyors.push(this.tableData[i].id);
+          console.log(this.selectedSurveyors);
+        }
+      }
+      for (let index = 0; index < this.myCheckbox._results.length; index++) {
+        this.myCheckbox._results[index]._checked = true;
+      }
+    } else {
+      for (let i = 0; i < this.tableData.length; i++) {
+        const i = this.selectedSurveyors.indexOf("id");
+        this.selectedSurveyors.splice(i, 1);
+        console.log(this.selectedSurveyors);
+        this.selectedSurveyors = [];
+        console.log(this.selectedSurveyors);
+      }
+      for (let index = 0; index < this.myCheckbox._results.length; index++) {
+        this.myCheckbox._results[index]._checked = false;
+      }
+    }
+  }
+  
+
 }
