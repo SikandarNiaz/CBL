@@ -22,7 +22,17 @@
                     <ul class="nested submenu" [class.expand]="showMenu == item.header">
 
                         <li *ngFor="let item2 of item.menuList">
-                            <a [routerLinkActive]="'link-active'" routerLink='/dashboard/{{item2.link}}'><span>{{ item2.lable | translate }}</span></a>
+                            <ng-container *ngIf="item2.reportId != -1; else elseBlock">
+                                <a [routerLinkActive]="'link-active'" routerLink="/dashboard/{{ item2.link }}/{{ item2.reportId }}">
+                                    <span>{{ item2.lable | translate }}</span>
+                                </a>
+                            </ng-container>
+                            <ng-template #elseBlock>
+                                <a [routerLinkActive]="'link-active'" routerLink="/dashboard/{{item2.link}}">
+                                    <span>{{ item2.lable | translate }}</span>
+                                </a>
+                            </ng-template>
+                           
 
                         </li>
 

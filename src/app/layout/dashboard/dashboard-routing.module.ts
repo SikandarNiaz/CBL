@@ -66,6 +66,7 @@ const routes: Routes = [
       },
       { path: "update_password", component: UpdatePasswordComponent },
       { path: "raw_data", component: RawDataComponent },
+      { path: "raw_data/:reportId", component: RawDataComponent },
       { path: "brand_sku_oos", component: DataAvailabilityComponent },
       {
         path: "supervisor_wwwr_summary",
