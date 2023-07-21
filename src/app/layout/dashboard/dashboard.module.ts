@@ -71,6 +71,7 @@ import { MerchandiserWiseScoreComponent } from "./innerComponents/merchandiser-w
 import { SupervisorProductivityComponent } from "./innerComponents/supervisor-productivity/supervisor-productivity.component";
 import { MerchandiserPlannedCallsComponent } from "./innerComponents/merchandiser-planned-calls/merchandiser-planned-calls.component";
 import { DistributionCheckInCardComponent } from "./innerComponents/distribution-check-in-card/distribution-check-in-card.component";
+import { UploadHurdleRateComponent } from "./innerComponents/upload-hurdle-rate/upload-hurdle-rate.component";
 @NgModule({
   imports: [
     FormsModule,
@@ -143,6 +144,7 @@ import { DistributionCheckInCardComponent } from "./innerComponents/distribution
     SupervisorProductivityComponent,
     MerchandiserPlannedCallsComponent,
     DistributionCheckInCardComponent,
+    UploadHurdleRateComponent
   ],
 })
 export class DashboardModule {}

@@ -1,0 +1,246 @@
+<mat-card class="mb-20">
+  <mat-card-content>
+    <mat-card-title>
+      Manage Hurdle Rates
+      <i [ngClass]="{ 'fa fa-cog fa-spin': loadingData }"></i>
+    </mat-card-title>
+    <section>
+      <mat-form-field
+        *ngIf="channels.length > 0 && projectType == 'NFL_CONDIMENTS' || projectType == 'NFL_CULINARY'"
+        class="example-margin mr-10-IMP"
+      >
+        <mat-select
+          placeholder="Channel Type"
+          name="channel"
+          [(ngModel)]="selectedChannel"
+        >
+          <ng-container *ngFor="let channel of channels">
+            <mat-option [value]="channel">{{ channel.title }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <ng-container *ngIf="selectedChannel.id">
+      <section>
+        <ng-container *ngIf="clusterList?.length > 0">
+          <mat-form-field class="example-margin mr-10-IMP">
+            <mat-select
+              placeholder="{{ labels.clusterLabel }}"
+              name="cluster"
+              [(ngModel)]="selectedCluster"
+              (ngModelChange)="getZoneByCluster()"
+            >
+              <mat-option
+                [value]="cluster"
+                *ngFor="let cluster of clusterList"
+                >{{ cluster.title }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+        <mat-form-field
+          *ngIf="zones?.length > 0"
+          class="example-margin mr-10-IMP"
+        >
+          <mat-select
+            placeholder="{{ labels.zoneLabel }}"
+            name="zone"
+            [(ngModel)]="selectedZone"
+            (ngModelChange)="zoneChange()"
+          >
+            <ng-container *ngFor="let zone of zones">
+              <mat-option [value]="zone">{{ zone.title }}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="regions.length > 0"
+          class="example-margin mr-10-IMP"
+        >
+          <mat-select
+            placeholder="{{ labels.regionLabel }}"
+            name="region"
+            [(ngModel)]="selectedRegion"
+          >
+            <ng-container *ngFor="let region of regions">
+              <mat-option [value]="region">{{ region.title }}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-form-field *ngIf="shops" class="example-margin mr-10-IMP">
+        <mat-select
+          placeholder="Shops"
+          name="shops"
+          [(ngModel)]="selectedShop"
+        >
+          <ngx-mat-select-search
+            [placeholderLabel]="'Find Shop...'"
+            [noEntriesFoundLabel]="'No Matching Shop Found'"
+            [(ngModel)]="selectedKeyword"
+            (ngModelChange)="filterItem(selectedKeyword)"
+          ></ngx-mat-select-search>
+          <mat-option [value]="shop" *ngFor="let shop of filteredShops">{{shop.shop_code}} - {{
+            shop.shop_name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field> -->
+      </section>
+      <section>
+        <strong> OR </strong>
+      </section>
+      <section>
+        <mat-form-field class="example-full-width">
+          <mat-label>Search Shop Code</mat-label>
+          <input matInput placeholder="Shop Code" [(ngModel)]="shopCode" />
+        </mat-form-field>
+      </section>
+      <section>
+        <button
+          class="mr-10-IMP"
+          [disabled]="
+            (!selectedZone.id ||
+              !selectedRegion.id ||
+              loadingData ||
+              selectedZone.id == -1) &&
+            shopCode == ''
+          "
+          (click)="loadHurdleRate()"
+          mat-raised-button
+          color="primary"
+        >
+          Display
+        </button>
+        <button
+          class="mr-10-IMP"
+          [disabled]="
+            (loadingData ||
+              !selectedZone.id ||
+              !selectedRegion.id ||
+              selectedChannel.length < 1) &&
+            shopCode == ''
+          "
+          (click)="downloadHurdleRate()"
+          mat-raised-button
+          color="primary"
+        >
+          Download Hurdle Rates
+        </button>
+        <span
+          ><small
+            >(Either select {{ labels.zoneLabel }} and {{ labels.regionLabel }} or
+            search through a Shop Code)</small
+          ></span
+        >
+      </section>
+    </ng-container>
+    <section>
+      <strong> OR </strong>
+    </section>
+    <form
+      (ngSubmit)="uploadData(form.value)"
+      [formGroup]="form"
+      enctype="multipart/form-data"
+    >
+      <section>
+        <input
+          #fileInput
+          (change)="onFileChange($event)"
+          id="avatar"
+          type="file"
+        />
+      </section>
+      <section>
+        <button
+          [disabled]="loadingUpload"
+          type="submit"
+          mat-raised-button
+          color="warn"
+        >
+          <i [ngClass]="{ 'fa fa-spinner fa-spin': loadingUpload }"></i>
+          Upload File
+        </button>
+      </section>
+    </form>
+  </mat-card-content>
+</mat-card>
+<div class="example-section" style="text-align: end">
+  <button
+    matTooltip="Download Sample File"
+    class="hidden-sm"
+    mat-icon-button
+    [matMenuTriggerFor]="profile"
+    [disabled]="hurdleRateList.length == 0"
+  >
+    <i class="material-icons"> cloud_download </i><br />
+  </button>
+  <mat-menu #profile="matMenu">
+    <ng-container *ngFor="let file of downloadList">
+      <button mat-menu-item (click)="downloadFile(file, hurdleRateList)">
+        <i class="{{ file?.icon }} " aria-hidden="true "></i> &nbsp;
+        <span>{{ file?.title }}</span>
+      </button>
+    </ng-container>
+  </mat-menu>
+</div>
+<mat-card *ngIf="hurdleRateList.length > 0">
+  <mat-card-content>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Shop Code</th>
+          <th scope="col">Shop Name</th>
+          <th scope="col">Region</th>
+          <th scope="col">Zone</th>
+          <th scope="col">Channel</th>
+          <th scope="col">Category</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Hurdle Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let count of hurdleRateList; let i = index">
+          <th scope="col">{{ i + 1 }}</th>
+          <td>{{ count?.shop_code }}</td>
+          <td>{{ count?.shop_title }}</td>
+          <td>{{ count?.region_name }}</td>
+          <td>{{ count?.zone_name }}</td>
+          <td>{{ count?.channel_title }}</td>
+          <td>{{ count?.category_title }}</td>
+          <td>{{ count?.brand_title }}</td>
+          <td>{{ count?.hurdle_rate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+<div
+  bsModal
+  #errorModal="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="dialog-child-name"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="dialog-child-name" class="modal-title pull-left">Status</h4>
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="hideErrorModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <label>{{ response }}</label>
+      </div>
+    </div>
+  </div>
+</div>

@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("zoneId", res.user.zoneIds);
         localStorage.setItem("Reevaluator", res.ReEvaluator);
         localStorage.setItem("Evaluator", res.Evaluator);
+        localStorage.setItem("projectType", res.projectType);
         localStorage.setItem(
           "labelProperties",
           JSON.stringify(res.labelProperties)

@@ -428,4 +428,27 @@ export class DashboardService {
     const url = this.ip + "distCheckInList";
     return this.http.post(url, urlEncode, this.httpOptions);
   }
+
+
+
+  uploadHurdleRates(obj) {
+    const url = this.ip + "update-hurdle-rates"; //  ---------> UploadHurdleRatesController
+    return this.http.post(url, obj);
+  }
+
+  getHurdleRates(obj) {
+    const urlEncode = this.UrlEncodeMaker(obj);   //------------> DisplayHurdleRatesController
+    const url = this.ip + "get_hurdle_rates";
+    return this.http.post(url, urlEncode, this.httpOptions);
+  }
+
+  getAllShops(zoneId, regionId) {
+    const filter = JSON.stringify({
+      act: 16,
+      zoneId: zoneId,
+      regionId: regionId,
+    });
+    const url = this.ip + "loadFilters";
+    return this.http.post(url, filter);
+  }
 }

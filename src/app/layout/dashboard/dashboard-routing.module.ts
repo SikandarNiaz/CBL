@@ -37,6 +37,7 @@ import { MerchandiserScoreComponent } from "./innerComponents/merchandiser-score
 import { SupervisorProductivityComponent } from "./innerComponents/supervisor-productivity/supervisor-productivity.component";
 import { MerchandiserPlannedCallsComponent } from "./innerComponents/merchandiser-planned-calls/merchandiser-planned-calls.component";
 import { DistributionCheckInCardComponent } from "./innerComponents/distribution-check-in-card/distribution-check-in-card.component";
+import { UploadHurdleRateComponent } from "./innerComponents/upload-hurdle-rate/upload-hurdle-rate.component";
 
 const routes: Routes = [
   {
@@ -76,6 +77,7 @@ const routes: Routes = [
       { path: "time-analysis-report", component: TimeAnalysisReportComponent },
       { path: "shop-list-report", component: ShopListReportComponent },
       { path: "merchandiser_List", component: MerchandiserListComponent },
+      { path: "upload_hurdle_rates", component: UploadHurdleRateComponent },
       {
         path: "merchandiser_attendance",
         component: MerchandiserAttendanceComponent,
