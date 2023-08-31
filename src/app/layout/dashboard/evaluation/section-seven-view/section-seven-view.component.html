@@ -103,10 +103,20 @@
                     <tr *ngFor="let product of products;let j= index">
                          <!-- <td>{{product?.category_title}}</td> -->
                         <td>{{product?.product_title}}</td>
-                        <td *ngIf="isEditable" style="cursor:pointer" (click)="toggleValue(product)" [ngClass]="{'background-color': product?.MSL=='Yes'}">
+                        <td *ngIf="isEditable" style="cursor:pointer" (click)="toggleValue(product)" [ngClass]="{'background-color': product?.MSL=='Yes'
+                        || product?.MSL == 'Y' 
+                        || product?.MSL == 'H' 
+                        || product?.MSL == 'R'
+                    
+                    }">
                             {{updateString(product?.available_sku)}}
                         </td>
-                        <td *ngIf="!isEditable" [ngClass]="{'background-color': product?.MSL=='Yes'}">
+                        <td *ngIf="!isEditable" [ngClass]="{'background-color': product?.MSL=='Yes'
+                        || product?.MSL == 'Y' 
+                        || product?.MSL == 'H' 
+                        || product?.MSL == 'R'
+                    
+                    }">
                             {{updateString(product?.available_sku)}}
 
                         </td>
