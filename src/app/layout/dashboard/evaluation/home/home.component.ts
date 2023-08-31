@@ -98,7 +98,6 @@ export class HomeComponent implements OnInit {
 
       this.getData(obj);
     });
-    console.log("this.p: ", this.p);
   }
   value = 5;
   options: any = {
@@ -209,9 +208,7 @@ export class HomeComponent implements OnInit {
             this.setRemarksForReEvaluation();
             }
           this.msl = this.data.msl;
-          if (this.productList.length > 0) { 
-            this.availabilityCount = Math.round(this.getMSLNAvailbilityCount(this.productList)); 
-          } // Math.round(this.getAvailabilityCount(this.productList));
+          if (this.productList.length > 0) { this.availabilityCount = Math.round(this.getMSLNAvailbilityCount(this.productList)); } // Math.round(this.getAvailabilityCount(this.productList));
           if (this.data.criteria) { this.calculateScore(); }
         }
       }
@@ -283,7 +280,7 @@ export class HomeComponent implements OnInit {
     const msl = [];
     products.forEach(p => {
       let obj = {};
-      if ((p.MSL === 'Yes' || p.MSL === 'Y' || p.MSL === 'H' || p.MSL === 'R') && p.available_sku === 1) {
+      if (p.MSL === 'Yes' && p.available_sku === 1) {
         obj = {
           available_sku: p.available_sku,
           MSL: p.MSL
@@ -291,7 +288,7 @@ export class HomeComponent implements OnInit {
         pro.push(obj);
       }
 
-      if (p.MSL === 'Yes' || p.MSL === 'Y' || p.MSL === 'H' || p.MSL === 'R') {
+      if (p.MSL === 'Yes') {
         msl.push(p);
       }
     });
