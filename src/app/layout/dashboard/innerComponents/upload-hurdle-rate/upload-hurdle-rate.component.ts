@@ -181,7 +181,7 @@ export class UploadHurdleRateComponent implements OnInit {
         ? this.selectedCluster.id == -1
           ? localStorage.getItem("clusterId")
           : this.selectedCluster.id
-        : localStorage.getItem("clusterId"),
+        : localStorage.getItem("clusterId") || -1,
       zoneId: this.selectedZone.id
         ? this.selectedZone.id == -1
           ? localStorage.getItem("zoneId")
@@ -278,7 +278,7 @@ export class UploadHurdleRateComponent implements OnInit {
         ? this.selectedCluster.id == -1
           ? localStorage.getItem("clusterId")
           : this.selectedCluster.id
-        : localStorage.getItem("clusterId"),
+        : localStorage.getItem("clusterId") || -1,
       zoneId: this.selectedZone.id
         ? this.selectedZone.id == -1
           ? localStorage.getItem("zoneId")
