@@ -38,6 +38,7 @@ import { SupervisorProductivityComponent } from "./innerComponents/supervisor-pr
 import { MerchandiserPlannedCallsComponent } from "./innerComponents/merchandiser-planned-calls/merchandiser-planned-calls.component";
 import { DistributionCheckInCardComponent } from "./innerComponents/distribution-check-in-card/distribution-check-in-card.component";
 import { UploadHurdleRateComponent } from "./innerComponents/upload-hurdle-rate/upload-hurdle-rate.component";
+import { TableauHelperComponent } from "./innerComponents/tableau-helper/tableau-helper.component";
 
 const routes: Routes = [
   {
@@ -53,6 +54,10 @@ const routes: Routes = [
       { path: "summary_report", component: SummaryComponent },
       { path: "productivity_report", component: ProductivityComponent },
       { path: "msl_dashboard", component: MslDashboardComponent },
+      {
+        path: "tableau",
+        component: TableauHelperComponent,
+      },
       {
         path: "productivity_dashboard",
         component: ProductivityDashboardComponent,

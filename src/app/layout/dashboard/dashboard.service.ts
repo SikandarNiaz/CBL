@@ -451,4 +451,9 @@ export class DashboardService {
     const url = this.ip + "loadFilters";
     return this.http.post(url, filter);
   }
+
+  getKey(obj) {
+    const body = this.UrlEncodeMaker(obj);
+    return this.http.post(this.ip + "/tableauTicket", body, this.httpOptions);
+  }
 }
